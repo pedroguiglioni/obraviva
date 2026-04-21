@@ -16,118 +16,178 @@
     <div class="login-box">
       <div class="login-logo">OBRA<span>VIVA</span></div>
       <div class="login-sub">Panel de administración</div>
-      <input type="password" id="login-password" placeholder="Contraseña" class="login-input" />
-      <button onclick="intentarLogin()" class="login-btn">Ingresar</button>
+      <p class="login-desc">Acceso restringido. Solo personal autorizado de OBRA VIVA.</p>
+      <div class="login-field">
+        <label class="login-label">Contraseña de acceso</label>
+        <input type="password" id="login-password" placeholder="••••••••••" class="login-input" />
+      </div>
+      <button onclick="intentarLogin()" class="login-btn">Ingresar al panel</button>
       <div id="login-error" class="login-error"></div>
     </div>
   </div>
 
   <!-- ADMIN PANEL -->
-  <div id="admin-panel" style="display:none">
+  <div id="admin-panel" style="display:none" class="admin-layout">
 
-    <!-- HEADER -->
-    <header class="admin-header">
-      <div class="admin-header-left">
-        <div class="admin-logo">OBRA<span>VIVA</span> <span class="admin-badge">Admin</span></div>
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="sidebar-logo">OBRA<span>VIVA</span></div>
+        <div class="sidebar-admin-label">Admin</div>
       </div>
-      <div class="admin-header-right">
-        <div class="supabase-status" id="supabase-status">
-          <span class="status-dot"></span> Conectando...
+
+      <nav class="sidebar-nav">
+        <div class="sidebar-section-label">Principal</div>
+        <a class="sidebar-item active" id="nav-obras" onclick="mostrarSeccion('obras')">
+          <span class="sidebar-icon">▤</span> Obras
+        </a>
+        <a class="sidebar-item" id="nav-dashboard" onclick="mostrarSeccion('dashboard')">
+          <span class="sidebar-icon">◈</span> Dashboard
+        </a>
+
+        <div class="sidebar-section-label" style="margin-top:20px">Próximamente</div>
+        <div class="sidebar-item disabled"><span class="sidebar-icon">◎</span> Artistas</div>
+        <div class="sidebar-item disabled"><span class="sidebar-icon">◎</span> Galerías</div>
+        <div class="sidebar-item disabled"><span class="sidebar-icon">◎</span> Anticuarios</div>
+        <div class="sidebar-item disabled"><span class="sidebar-icon">◎</span> Ferias</div>
+        <div class="sidebar-item disabled"><span class="sidebar-icon">◎</span> Subastas</div>
+        <div class="sidebar-item disabled"><span class="sidebar-icon">◎</span> Consultas</div>
+        <div class="sidebar-item disabled"><span class="sidebar-icon">⚙</span> Configuración</div>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="sidebar-status">
+          <span class="status-dot" id="status-dot"></span>
+          <span id="status-text">Conectando…</span>
         </div>
-        <a href="index.html" target="_blank" class="btn-ver-web">Ver web pública →</a>
-        <button onclick="cerrarSesion()" class="btn-logout">Salir</button>
+        <a href="index.html" target="_blank" class="sidebar-link-web">Ver web pública →</a>
+        <button onclick="cerrarSesion()" class="sidebar-logout">Cerrar sesión</button>
       </div>
-    </header>
+    </aside>
 
-    <!-- DASHBOARD -->
-    <section class="dashboard">
-      <div class="metric-card">
-        <div class="metric-n" id="m-total">—</div>
-        <div class="metric-l">Total obras</div>
-      </div>
-      <div class="metric-card">
-        <div class="metric-n" id="m-activas">—</div>
-        <div class="metric-l">Activas</div>
-      </div>
-      <div class="metric-card">
-        <div class="metric-n" id="m-destacadas">—</div>
-        <div class="metric-l">Destacadas</div>
-      </div>
-      <div class="metric-card">
-        <div class="metric-n" id="m-reservadas">—</div>
-        <div class="metric-l">Reservadas</div>
-      </div>
-      <div class="metric-card">
-        <div class="metric-n" id="m-vendidas">—</div>
-        <div class="metric-l">Vendidas</div>
-      </div>
-      <div class="metric-card">
-        <div class="metric-n" id="m-sin-imagen">—</div>
-        <div class="metric-l">Sin imagen</div>
-      </div>
-    </section>
+    <!-- MAIN -->
+    <main class="admin-main">
 
-    <!-- ACCIONES Y FILTROS -->
-    <section class="admin-toolbar">
-      <button onclick="abrirFormulario()" class="btn-nueva-obra">+ Nueva obra</button>
-      <div class="toolbar-filtros">
-        <input type="text" id="filtro-buscar" placeholder="Buscar por título o artista…" class="filtro-input" oninput="aplicarFiltros()" />
-        <select id="filtro-categoria" class="filtro-select" onchange="aplicarFiltros()">
-          <option value="">Todas las categorías</option>
-          <option>Pinturas</option>
-          <option>Esculturas</option>
-          <option>Antigüedades</option>
-          <option>Orfebrería</option>
-          <option>Coleccionables</option>
-          <option>Muebles antiguos</option>
-          <option>Arte contemporáneo</option>
-          <option>Arte religioso</option>
-          <option>Platería criolla</option>
-          <option>Objetos decorativos</option>
-          <option>Libros y documentos</option>
-        </select>
-        <select id="filtro-estado" class="filtro-select" onchange="aplicarFiltros()">
-          <option value="">Todos los estados</option>
-          <option value="disponible">Disponible</option>
-          <option value="reservado">Reservado</option>
-          <option value="vendido">Vendido</option>
-        </select>
-        <select id="filtro-activo" class="filtro-select" onchange="aplicarFiltros()">
-          <option value="">Activas e inactivas</option>
-          <option value="true">Solo activas</option>
-          <option value="false">Solo inactivas</option>
-        </select>
-        <button onclick="limpiarFiltros()" class="btn-limpiar">Limpiar</button>
-      </div>
-    </section>
+      <!-- HEADER -->
+      <header class="admin-header">
+        <div>
+          <h1 class="admin-page-title" id="page-title">Gestión de obras</h1>
+          <div class="admin-page-sub">Administrá el catálogo, estados, imágenes y publicaciones de OBRA VIVA.</div>
+        </div>
+      </header>
 
-    <!-- MENSAJE DE ESTADO -->
-    <div id="admin-msg" class="admin-msg" style="display:none"></div>
+      <!-- DASHBOARD -->
+      <section class="dashboard">
+        <div class="metric-card">
+          <div class="metric-n" id="m-total">—</div>
+          <div class="metric-l">Total de obras</div>
+        </div>
+        <div class="metric-card accent-green">
+          <div class="metric-n" id="m-activas">—</div>
+          <div class="metric-l">Activas</div>
+        </div>
+        <div class="metric-card accent-bordo">
+          <div class="metric-n" id="m-destacadas">—</div>
+          <div class="metric-l">Destacadas</div>
+        </div>
+        <div class="metric-card accent-amber">
+          <div class="metric-n" id="m-reservadas">—</div>
+          <div class="metric-l">Reservadas</div>
+        </div>
+        <div class="metric-card accent-red">
+          <div class="metric-n" id="m-vendidas">—</div>
+          <div class="metric-l">Vendidas</div>
+        </div>
+        <div class="metric-card accent-gray">
+          <div class="metric-n" id="m-sin-imagen">—</div>
+          <div class="metric-l">Sin imagen</div>
+        </div>
+      </section>
 
-    <!-- TABLA DE OBRAS -->
-    <section class="tabla-wrap">
-      <div id="tabla-loading" class="tabla-loading">Cargando obras...</div>
-      <table class="tabla-obras" id="tabla-obras" style="display:none">
-        <thead>
-          <tr>
-            <th>Imagen</th>
-            <th>Título</th>
-            <th>Categoría</th>
-            <th>Artista / Vendedor</th>
-            <th>Provincia</th>
-            <th>Precio</th>
-            <th>Estado</th>
-            <th>Badges</th>
-            <th>Activa</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody id="tabla-body"></tbody>
-      </table>
-      <div id="tabla-vacia" class="tabla-vacia" style="display:none">No se encontraron obras con los filtros aplicados.</div>
-    </section>
+      <!-- TOOLBAR -->
+      <section class="admin-toolbar">
+        <div class="toolbar-top">
+          <button onclick="abrirFormulario()" class="btn-nueva-obra">+ Nueva obra</button>
+          <input type="text" id="filtro-buscar" placeholder="Buscar por título, artista o vendedor…" class="filtro-buscar" oninput="aplicarFiltros()" />
+        </div>
+        <div class="toolbar-filtros">
+          <select id="filtro-categoria" class="filtro-select" onchange="aplicarFiltros()">
+            <option value="">Todas las categorías</option>
+            <option>Pinturas</option><option>Esculturas</option><option>Antigüedades</option>
+            <option>Orfebrería</option><option>Coleccionables</option><option>Muebles antiguos</option>
+            <option>Arte contemporáneo</option><option>Arte religioso</option><option>Platería criolla</option>
+            <option>Objetos decorativos</option><option>Libros y documentos</option>
+          </select>
+          <select id="filtro-estado" class="filtro-select" onchange="aplicarFiltros()">
+            <option value="">Todos los estados</option>
+            <option value="disponible">Disponible</option>
+            <option value="reservado">Reservado</option>
+            <option value="vendido">Vendido</option>
+          </select>
+          <select id="filtro-provincia" class="filtro-select" onchange="aplicarFiltros()">
+            <option value="">Todas las provincias</option>
+            <option>Corrientes</option><option>Chaco</option><option>Buenos Aires</option>
+            <option>Córdoba</option><option>Santa Fe</option><option>Mendoza</option>
+            <option>Salta</option><option>Tucumán</option><option>Entre Ríos</option>
+            <option>Misiones</option><option>Jujuy</option><option>Neuquén</option>
+          </select>
+          <select id="filtro-destacado" class="filtro-select" onchange="aplicarFiltros()">
+            <option value="">Destacadas y no destacadas</option>
+            <option value="true">Solo destacadas</option>
+            <option value="false">No destacadas</option>
+          </select>
+          <select id="filtro-imagen" class="filtro-select" onchange="aplicarFiltros()">
+            <option value="">Con y sin imagen</option>
+            <option value="con">Con imagen</option>
+            <option value="sin">Sin imagen</option>
+          </select>
+          <select id="filtro-activo" class="filtro-select" onchange="aplicarFiltros()">
+            <option value="">Activas e inactivas</option>
+            <option value="true">Solo activas</option>
+            <option value="false">Solo inactivas</option>
+          </select>
+          <button onclick="limpiarFiltros()" class="btn-limpiar">Limpiar</button>
+        </div>
+      </section>
 
-  </div><!-- fin admin-panel -->
+      <!-- MENSAJE -->
+      <div id="admin-msg" class="admin-msg" style="display:none"></div>
+
+      <!-- TABLA -->
+      <section class="tabla-wrap">
+        <div id="tabla-loading" class="tabla-loading">
+          <div class="loading-dots"><span></span><span></span><span></span></div>
+          <div style="font-size:12px;color:#9A9590;margin-top:8px">Cargando obras…</div>
+        </div>
+
+        <table class="tabla-obras" id="tabla-obras" style="display:none">
+          <thead>
+            <tr>
+              <th>Imagen</th>
+              <th>Título</th>
+              <th>Categoría</th>
+              <th>Artista / Vendedor</th>
+              <th>Provincia</th>
+              <th>Precio</th>
+              <th>Estado</th>
+              <th>Badges</th>
+              <th>Activa</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="tabla-body"></tbody>
+        </table>
+
+        <div id="tabla-vacia" class="tabla-vacia" style="display:none">
+          <div class="vacia-icon">◈</div>
+          <div class="vacia-titulo">No se encontraron obras</div>
+          <div class="vacia-sub">Revisá los filtros aplicados o creá la primera obra del catálogo.</div>
+          <button onclick="abrirFormulario()" class="btn-nueva-obra" style="margin-top:20px">+ Nueva obra</button>
+        </div>
+      </section>
+
+    </main>
+  </div>
 
   <!-- MODAL FORMULARIO -->
   <div id="modal-overlay" class="modal-overlay" style="display:none" onclick="cerrarModalSiOverlay(event)">
@@ -142,30 +202,23 @@
         <div class="form-section-title">Datos principales</div>
         <div class="form-grid-2">
           <div class="form-group">
-            <label>Título *</label>
+            <label>Título <span class="req">*</span></label>
             <input type="text" id="form-titulo" class="form-input" placeholder="Ej: Tarde en el Iberá" />
           </div>
           <div class="form-group">
-            <label>Artista / Vendedor *</label>
+            <label>Artista / Vendedor <span class="req">*</span></label>
             <input type="text" id="form-artista" class="form-input" placeholder="Ej: Carlos Méndez" />
           </div>
         </div>
         <div class="form-grid-2">
           <div class="form-group">
-            <label>Categoría *</label>
+            <label>Categoría <span class="req">*</span></label>
             <select id="form-categoria" class="form-input">
-              <option value="">Seleccionar</option>
-              <option>Pinturas</option>
-              <option>Esculturas</option>
-              <option>Antigüedades</option>
-              <option>Orfebrería</option>
-              <option>Coleccionables</option>
-              <option>Muebles antiguos</option>
-              <option>Arte contemporáneo</option>
-              <option>Arte religioso</option>
-              <option>Platería criolla</option>
-              <option>Objetos decorativos</option>
-              <option>Libros y documentos</option>
+              <option value="">Seleccionar categoría</option>
+              <option>Pinturas</option><option>Esculturas</option><option>Antigüedades</option>
+              <option>Orfebrería</option><option>Coleccionables</option><option>Muebles antiguos</option>
+              <option>Arte contemporáneo</option><option>Arte religioso</option><option>Platería criolla</option>
+              <option>Objetos decorativos</option><option>Libros y documentos</option>
             </select>
           </div>
           <div class="form-group">
@@ -175,9 +228,9 @@
         </div>
         <div class="form-grid-2">
           <div class="form-group">
-            <label>Tipo de vendedor *</label>
+            <label>Tipo de vendedor <span class="req">*</span></label>
             <select id="form-tipo-vendedor" class="form-input">
-              <option value="">Seleccionar</option>
+              <option value="">Seleccionar tipo</option>
               <option value="artista">Artista</option>
               <option value="galeria">Galería</option>
               <option value="anticuario">Anticuario</option>
@@ -191,6 +244,8 @@
             <input type="text" id="form-whatsapp" class="form-input" placeholder="Ej: 5493624123456" />
           </div>
         </div>
+
+        <div class="form-section-title">Ubicación</div>
         <div class="form-grid-2">
           <div class="form-group">
             <label>Provincia</label>
@@ -211,13 +266,13 @@
           <div class="form-group">
             <label>Moneda</label>
             <select id="form-moneda" class="form-input">
-              <option value="ARS">ARS (pesos)</option>
-              <option value="USD">USD (dólares)</option>
+              <option value="ARS">ARS — Pesos</option>
+              <option value="USD">USD — Dólares</option>
             </select>
           </div>
           <div class="form-group">
             <label>Modo de venta</label>
-            <select id="form-modo" class="form-input">
+            <select id="form-modo" class="form-input" onchange="toggleCamposSubasta()">
               <option value="venta_directa">Venta directa</option>
               <option value="consulta">Consulta</option>
               <option value="subasta">Subasta</option>
@@ -239,7 +294,21 @@
           </div>
         </div>
 
-        <div class="form-section-title">Datos técnicos / culturales</div>
+        <div id="campos-subasta" style="display:none">
+          <div class="form-section-title">Datos de subasta</div>
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label>Precio base</label>
+              <input type="number" id="form-precio-base" class="form-input" placeholder="80000" />
+            </div>
+            <div class="form-group">
+              <label>Fecha y hora de cierre</label>
+              <input type="datetime-local" id="form-fecha-cierre" class="form-input" />
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section-title">Técnica y cultura</div>
         <div class="form-grid-3">
           <div class="form-group">
             <label>Técnica</label>
@@ -250,18 +319,18 @@
             <input type="text" id="form-medidas" class="form-input" placeholder="Ej: 80 × 100 cm" />
           </div>
           <div class="form-group">
-            <label>Año / Época</label>
+            <label>Año / Período</label>
             <input type="text" id="form-anio" class="form-input" placeholder="Ej: 1978 o S. XVIII" />
           </div>
         </div>
         <div class="form-grid-3">
           <div class="form-group">
             <label>Época</label>
-            <input type="text" id="form-epoca" class="form-input" placeholder="Ej: Colonial, Moderno" />
+            <input type="text" id="form-epoca" class="form-input" placeholder="Ej: Colonial" />
           </div>
           <div class="form-group">
             <label>Origen</label>
-            <input type="text" id="form-origen" class="form-input" placeholder="Ej: Argentina, Francia" />
+            <input type="text" id="form-origen" class="form-input" placeholder="Ej: Argentina" />
           </div>
           <div class="form-group">
             <label>Material</label>
@@ -270,43 +339,44 @@
         </div>
         <div class="form-group">
           <label>Estilo</label>
-          <input type="text" id="form-estilo" class="form-input" placeholder="Ej: Figurativo, Abstracto, Barroco" />
+          <input type="text" id="form-estilo" class="form-input" placeholder="Ej: Figurativo, Barroco, Abstracto" />
         </div>
         <div class="form-group">
           <label>Descripción</label>
-          <textarea id="form-descripcion" class="form-input form-textarea" placeholder="Descripción de la obra, historia, contexto…"></textarea>
+          <textarea id="form-descripcion" class="form-input form-textarea" placeholder="Historia, contexto y descripción de la obra…"></textarea>
         </div>
 
         <div class="form-section-title">Imagen portada</div>
         <div class="form-group">
-          <label>URL de imagen portada</label>
-          <input type="text" id="form-imagen" class="form-input" placeholder="https://... o subir imagen abajo" />
+          <label>URL de imagen (si ya tenés el link)</label>
+          <input type="text" id="form-imagen" class="form-input" placeholder="https://…" oninput="actualizarPreviewUrl()" />
         </div>
         <div class="form-group">
-          <label>Subir imagen desde tu computadora</label>
+          <label>O subir desde tu computadora</label>
           <input type="file" id="form-imagen-file" class="form-input-file" accept="image/*" onchange="previsualizarImagen()" />
-          <div id="imagen-preview-wrap" style="display:none; margin-top:10px;">
-            <img id="imagen-preview" src="" alt="Preview" style="max-width:200px; max-height:160px; object-fit:cover; border:0.5px solid #E2DED8;" />
-          </div>
+        </div>
+        <div id="imagen-preview-wrap" style="display:none; margin-top:12px;">
+          <img id="imagen-preview" src="" alt="Preview" class="imagen-preview" />
+          <div class="imagen-preview-label">Vista previa</div>
         </div>
 
-        <div class="form-section-title">Configuración</div>
+        <div class="form-section-title">Visibilidad</div>
         <div class="form-checks">
           <label class="check-label">
             <input type="checkbox" id="form-destacado" />
-            <span>Destacado</span>
+            <span>Destacada en home</span>
           </label>
           <label class="check-label">
             <input type="checkbox" id="form-curado" />
-            <span>Curado</span>
+            <span>Curada editorialmente</span>
           </label>
           <label class="check-label">
             <input type="checkbox" id="form-verificado" />
-            <span>Verificado</span>
+            <span>Vendedor verificado</span>
           </label>
           <label class="check-label">
             <input type="checkbox" id="form-activo" checked />
-            <span>Activo (visible en web)</span>
+            <span>Activa y visible en la web</span>
           </label>
         </div>
       </div>
@@ -317,19 +387,21 @@
     </div>
   </div>
 
-  <!-- MODAL CONFIRMAR ELIMINACIÓN -->
+  <!-- MODAL CONFIRMAR ELIMINAR -->
   <div id="modal-confirmar" class="modal-overlay" style="display:none">
     <div class="modal modal-chico">
       <div class="modal-header">
-        <h2 class="modal-title">Confirmar eliminación</h2>
+        <h2 class="modal-title">Eliminar obra definitivamente</h2>
+        <button onclick="cerrarConfirmar()" class="modal-close">✕</button>
       </div>
       <div class="modal-body">
-        <p style="font-size:13px;color:#6B6B6B;line-height:1.6;">¿Estás seguro de que querés eliminar esta obra? Esta acción no se puede deshacer.<br><strong>Recomendamos desactivar en lugar de eliminar.</strong></p>
+        <div class="confirmar-warning">⚠ Esta acción no se puede deshacer</div>
+        <p class="confirmar-texto">La obra será eliminada permanentemente de la base de datos.</p>
+        <p class="confirmar-recomendacion">Si solo querés ocultarla de la web, usá <strong>Desactivar</strong> en cambio.</p>
       </div>
       <div class="modal-footer">
         <button onclick="cerrarConfirmar()" class="btn-cancelar">Cancelar</button>
-        <button onclick="desactivarConfirmado()" class="btn-desactivar">Desactivar (recomendado)</button>
-        <button onclick="eliminarConfirmado()" class="btn-eliminar">Eliminar definitivamente</button>
+        <button onclick="eliminarConfirmado()" class="btn-eliminar-confirm">Sí, eliminar definitivamente</button>
       </div>
     </div>
   </div>
