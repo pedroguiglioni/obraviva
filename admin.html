@@ -35,7 +35,6 @@
         <div class="sidebar-logo">OBRA<span>VIVA</span></div>
         <div class="sidebar-admin-label">Admin</div>
       </div>
-
       <nav class="sidebar-nav">
         <div class="sidebar-section-label">Principal</div>
         <a class="sidebar-item active" id="nav-obras" onclick="mostrarSeccion('obras')">
@@ -44,7 +43,6 @@
         <a class="sidebar-item" id="nav-dashboard" onclick="mostrarSeccion('dashboard')">
           <span class="sidebar-icon">◈</span> Dashboard
         </a>
-
         <div class="sidebar-section-label" style="margin-top:20px">Próximamente</div>
         <div class="sidebar-item disabled"><span class="sidebar-icon">◎</span> Artistas</div>
         <div class="sidebar-item disabled"><span class="sidebar-icon">◎</span> Galerías</div>
@@ -54,7 +52,6 @@
         <div class="sidebar-item disabled"><span class="sidebar-icon">◎</span> Consultas</div>
         <div class="sidebar-item disabled"><span class="sidebar-icon">⚙</span> Configuración</div>
       </nav>
-
       <div class="sidebar-footer">
         <div class="sidebar-status">
           <span class="status-dot" id="status-dot"></span>
@@ -74,6 +71,7 @@
           <h1 class="admin-page-title" id="page-title">Gestión de obras</h1>
           <div class="admin-page-sub">Administrá el catálogo, estados, imágenes y publicaciones de OBRA VIVA.</div>
         </div>
+        <button onclick="abrirDrawer()" class="btn-nueva-obra-header">+ Nueva obra</button>
       </header>
 
       <!-- DASHBOARD -->
@@ -107,7 +105,7 @@
       <!-- TOOLBAR -->
       <section class="admin-toolbar">
         <div class="toolbar-top">
-          <button onclick="abrirFormulario()" class="btn-nueva-obra">+ Nueva obra</button>
+          <button onclick="abrirDrawer()" class="btn-nueva-obra">+ Nueva obra</button>
           <input type="text" id="filtro-buscar" placeholder="Buscar por título, artista o vendedor…" class="filtro-buscar" oninput="aplicarFiltros()" />
         </div>
         <div class="toolbar-filtros">
@@ -159,7 +157,6 @@
           <div class="loading-dots"><span></span><span></span><span></span></div>
           <div style="font-size:12px;color:#9A9590;margin-top:8px">Cargando obras…</div>
         </div>
-
         <table class="tabla-obras" id="tabla-obras" style="display:none">
           <thead>
             <tr>
@@ -177,38 +174,53 @@
           </thead>
           <tbody id="tabla-body"></tbody>
         </table>
-
         <div id="tabla-vacia" class="tabla-vacia" style="display:none">
           <div class="vacia-icon">◈</div>
           <div class="vacia-titulo">No se encontraron obras</div>
-          <div class="vacia-sub">Revisá los filtros aplicados o creá la primera obra del catálogo.</div>
-          <button onclick="abrirFormulario()" class="btn-nueva-obra" style="margin-top:20px">+ Nueva obra</button>
+          <div class="vacia-sub">Revisá los filtros o creá la primera obra.</div>
+          <button onclick="abrirDrawer()" class="btn-nueva-obra" style="margin-top:20px">+ Nueva obra</button>
         </div>
       </section>
 
     </main>
   </div>
 
-  <!-- MODAL FORMULARIO -->
-  <div id="modal-overlay" class="modal-overlay" style="display:none" onclick="cerrarModalSiOverlay(event)">
-    <div class="modal">
-      <div class="modal-header">
-        <h2 class="modal-title" id="modal-title">Nueva obra</h2>
-        <button onclick="cerrarFormulario()" class="modal-close">✕</button>
-      </div>
-      <div class="modal-body">
-        <input type="hidden" id="form-id" />
+  <!-- DRAWER LATERAL -->
+  <div id="drawer-overlay" class="drawer-overlay" style="display:none" onclick="cerrarDrawerSiOverlay(event)">
+    <div class="drawer" id="drawer">
 
-        <div class="form-section-title">Datos principales</div>
-        <div class="form-grid-2">
-          <div class="form-group">
-            <label>Título <span class="req">*</span></label>
-            <input type="text" id="form-titulo" class="form-input" placeholder="Ej: Tarde en el Iberá" />
-          </div>
-          <div class="form-group">
-            <label>Artista / Vendedor <span class="req">*</span></label>
-            <input type="text" id="form-artista" class="form-input" placeholder="Ej: Carlos Méndez" />
-          </div>
+      <!-- DRAWER HEADER -->
+      <div class="drawer-header">
+        <div>
+          <h2 class="drawer-title" id="drawer-title">Nueva obra</h2>
+          <div class="drawer-subtitle" id="drawer-subtitle">Completá los datos para publicar en OBRA VIVA</div>
+        </div>
+        <button onclick="cerrarDrawer()" class="drawer-close">✕</button>
+      </div>
+
+      <!-- TABS -->
+      <div class="drawer-tabs">
+        <button class="drawer-tab active" onclick="irTab(0)" id="tab-0">Básico</button>
+        <button class="drawer-tab" onclick="irTab(1)" id="tab-1">Comercial</button>
+        <button class="drawer-tab" onclick="irTab(2)" id="tab-2">Técnico</button>
+        <button class="drawer-tab" onclick="irTab(3)" id="tab-3">Imagen</button>
+        <button class="drawer-tab" onclick="irTab(4)" id="tab-4">Config.</button>
+      </div>
+
+      <input type="hidden" id="form-id" />
+
+      <!-- TAB 0: BÁSICO -->
+      <div class="drawer-body" id="drawer-tab-0">
+        <div class="form-section-title">Información principal</div>
+        <div class="form-group">
+          <label>Título <span class="req">*</span></label>
+          <input type="text" id="form-titulo" class="form-input" placeholder="Ej: Tarde en el Iberá" />
+          <div class="form-error" id="err-titulo"></div>
+        </div>
+        <div class="form-group">
+          <label>Artista / Vendedor <span class="req">*</span></label>
+          <input type="text" id="form-artista" class="form-input" placeholder="Ej: Carlos Méndez" />
+          <div class="form-error" id="err-artista"></div>
         </div>
         <div class="form-grid-2">
           <div class="form-group">
@@ -220,6 +232,7 @@
               <option>Arte contemporáneo</option><option>Arte religioso</option><option>Platería criolla</option>
               <option>Objetos decorativos</option><option>Libros y documentos</option>
             </select>
+            <div class="form-error" id="err-categoria"></div>
           </div>
           <div class="form-group">
             <label>Subcategoría</label>
@@ -238,27 +251,44 @@
               <option value="feria">Feria</option>
               <option value="especialista">Especialista</option>
             </select>
+            <div class="form-error" id="err-tipo"></div>
           </div>
           <div class="form-group">
             <label>WhatsApp de contacto</label>
             <input type="text" id="form-whatsapp" class="form-input" placeholder="Ej: 5493624123456" />
           </div>
         </div>
-
         <div class="form-section-title">Ubicación</div>
         <div class="form-grid-2">
           <div class="form-group">
             <label>Provincia</label>
-            <input type="text" id="form-provincia" class="form-input" placeholder="Ej: Corrientes" />
+            <select id="form-provincia" class="form-input">
+              <option value="">Seleccionar provincia</option>
+              <option>Corrientes</option><option>Chaco</option><option>Buenos Aires</option>
+              <option>Córdoba</option><option>Santa Fe</option><option>Mendoza</option>
+              <option>Salta</option><option>Tucumán</option><option>Entre Ríos</option>
+              <option>Misiones</option><option>Jujuy</option><option>Neuquén</option>
+              <option>Río Negro</option><option>San Juan</option><option>San Luis</option>
+              <option>La Pampa</option><option>Formosa</option><option>Santiago del Estero</option>
+              <option>Catamarca</option><option>La Rioja</option><option>Tierra del Fuego</option>
+              <option>Santa Cruz</option><option>Chubut</option>
+            </select>
           </div>
           <div class="form-group">
             <label>Ciudad</label>
             <input type="text" id="form-ciudad" class="form-input" placeholder="Ej: Corrientes Capital" />
           </div>
         </div>
+        <div class="form-group">
+          <label>Descripción</label>
+          <textarea id="form-descripcion" class="form-input form-textarea" placeholder="Historia, contexto y descripción de la obra…"></textarea>
+        </div>
+      </div>
 
-        <div class="form-section-title">Datos comerciales</div>
-        <div class="form-grid-3">
+      <!-- TAB 1: COMERCIAL -->
+      <div class="drawer-body" id="drawer-tab-1" style="display:none">
+        <div class="form-section-title">Precio y venta</div>
+        <div class="form-grid-2">
           <div class="form-group">
             <label>Precio</label>
             <input type="number" id="form-precio" class="form-input" placeholder="280000" />
@@ -266,10 +296,12 @@
           <div class="form-group">
             <label>Moneda</label>
             <select id="form-moneda" class="form-input">
-              <option value="ARS">ARS — Pesos</option>
+              <option value="ARS">ARS — Pesos argentinos</option>
               <option value="USD">USD — Dólares</option>
             </select>
           </div>
+        </div>
+        <div class="form-grid-2">
           <div class="form-group">
             <label>Modo de venta</label>
             <select id="form-modo" class="form-input" onchange="toggleCamposSubasta()">
@@ -278,8 +310,6 @@
               <option value="subasta">Subasta</option>
             </select>
           </div>
-        </div>
-        <div class="form-grid-2">
           <div class="form-group">
             <label>Estado</label>
             <select id="form-estado" class="form-input">
@@ -288,14 +318,17 @@
               <option value="vendido">Vendido</option>
             </select>
           </div>
-          <div class="form-group">
-            <label>Orden de aparición</label>
-            <input type="number" id="form-orden" class="form-input" placeholder="0" />
-          </div>
+        </div>
+        <div class="form-group">
+          <label>Orden de aparición</label>
+          <input type="number" id="form-orden" class="form-input" placeholder="0 = primero" style="max-width:160px" />
+          <div class="form-hint">Número más bajo aparece primero en la web.</div>
         </div>
 
+        <!-- CAMPOS SUBASTA -->
         <div id="campos-subasta" style="display:none">
-          <div class="form-section-title">Datos de subasta</div>
+          <div class="form-section-title" style="color:var(--bordo)">Datos de subasta</div>
+          <div class="subasta-aviso">Estos campos solo aplican cuando el modo de venta es "Subasta".</div>
           <div class="form-grid-2">
             <div class="form-group">
               <label>Precio base</label>
@@ -307,9 +340,12 @@
             </div>
           </div>
         </div>
+      </div>
 
-        <div class="form-section-title">Técnica y cultura</div>
-        <div class="form-grid-3">
+      <!-- TAB 2: TÉCNICO -->
+      <div class="drawer-body" id="drawer-tab-2" style="display:none">
+        <div class="form-section-title">Ficha técnica</div>
+        <div class="form-grid-2">
           <div class="form-group">
             <label>Técnica</label>
             <input type="text" id="form-tecnica" class="form-input" placeholder="Ej: Óleo sobre tela" />
@@ -318,71 +354,104 @@
             <label>Medidas</label>
             <input type="text" id="form-medidas" class="form-input" placeholder="Ej: 80 × 100 cm" />
           </div>
+        </div>
+        <div class="form-grid-2">
           <div class="form-group">
             <label>Año / Período</label>
-            <input type="text" id="form-anio" class="form-input" placeholder="Ej: 1978 o S. XVIII" />
+            <input type="text" id="form-anio" class="form-input" placeholder="Ej: 1978 o Siglo XVIII" />
           </div>
-        </div>
-        <div class="form-grid-3">
           <div class="form-group">
             <label>Época</label>
-            <input type="text" id="form-epoca" class="form-input" placeholder="Ej: Colonial" />
+            <input type="text" id="form-epoca" class="form-input" placeholder="Ej: Colonial, Moderno" />
           </div>
+        </div>
+        <div class="form-grid-2">
           <div class="form-group">
             <label>Origen</label>
-            <input type="text" id="form-origen" class="form-input" placeholder="Ej: Argentina" />
+            <input type="text" id="form-origen" class="form-input" placeholder="Ej: Argentina, Francia" />
           </div>
           <div class="form-group">
             <label>Material</label>
-            <input type="text" id="form-material" class="form-input" placeholder="Ej: Bronce, Plata" />
+            <input type="text" id="form-material" class="form-input" placeholder="Ej: Bronce, Plata, Madera" />
           </div>
         </div>
         <div class="form-group">
           <label>Estilo</label>
           <input type="text" id="form-estilo" class="form-input" placeholder="Ej: Figurativo, Barroco, Abstracto" />
         </div>
-        <div class="form-group">
-          <label>Descripción</label>
-          <textarea id="form-descripcion" class="form-input form-textarea" placeholder="Historia, contexto y descripción de la obra…"></textarea>
-        </div>
+      </div>
 
+      <!-- TAB 3: IMAGEN -->
+      <div class="drawer-body" id="drawer-tab-3" style="display:none">
         <div class="form-section-title">Imagen portada</div>
-        <div class="form-group">
-          <label>URL de imagen (si ya tenés el link)</label>
-          <input type="text" id="form-imagen" class="form-input" placeholder="https://…" oninput="actualizarPreviewUrl()" />
-        </div>
-        <div class="form-group">
-          <label>O subir desde tu computadora</label>
-          <input type="file" id="form-imagen-file" class="form-input-file" accept="image/*" onchange="previsualizarImagen()" />
-        </div>
-        <div id="imagen-preview-wrap" style="display:none; margin-top:12px;">
-          <img id="imagen-preview" src="" alt="Preview" class="imagen-preview" />
-          <div class="imagen-preview-label">Vista previa</div>
+
+        <div id="imagen-preview-grande" class="imagen-preview-grande" style="display:none">
+          <img id="imagen-preview" src="" alt="Preview" />
+          <div class="imagen-preview-actions">
+            <button onclick="reemplazarImagen()" class="btn-reemplazar">Reemplazar imagen</button>
+            <button onclick="quitarImagen()" class="btn-quitar-img">Quitar</button>
+          </div>
         </div>
 
-        <div class="form-section-title">Visibilidad</div>
-        <div class="form-checks">
-          <label class="check-label">
-            <input type="checkbox" id="form-destacado" />
-            <span>Destacada en home</span>
-          </label>
-          <label class="check-label">
-            <input type="checkbox" id="form-curado" />
-            <span>Curada editorialmente</span>
-          </label>
-          <label class="check-label">
-            <input type="checkbox" id="form-verificado" />
-            <span>Vendedor verificado</span>
-          </label>
-          <label class="check-label">
+        <div id="imagen-upload-zone" class="imagen-upload-zone">
+          <div class="upload-icon">↑</div>
+          <div class="upload-text">Arrastrá una imagen o hacé clic para seleccionar</div>
+          <div class="upload-hint">JPG, PNG, WEBP · Máximo 5MB recomendado</div>
+          <input type="file" id="form-imagen-file" class="upload-input" accept="image/*" onchange="previsualizarImagen()" />
+        </div>
+
+        <div class="form-section-title" style="margin-top:20px">O ingresá una URL de imagen</div>
+        <div class="form-group">
+          <input type="text" id="form-imagen" class="form-input" placeholder="https://…" oninput="actualizarPreviewUrl()" />
+          <div class="form-hint">Pegá el link de una imagen ya alojada en internet.</div>
+        </div>
+      </div>
+
+      <!-- TAB 4: CONFIGURACIÓN -->
+      <div class="drawer-body" id="drawer-tab-4" style="display:none">
+        <div class="form-section-title">Visibilidad en la web</div>
+        <div class="checks-grid">
+          <label class="check-card">
             <input type="checkbox" id="form-activo" checked />
-            <span>Activa y visible en la web</span>
+            <div class="check-card-content">
+              <div class="check-card-title">Activa</div>
+              <div class="check-card-desc">La obra aparece en la web pública.</div>
+            </div>
+          </label>
+          <label class="check-card">
+            <input type="checkbox" id="form-destacado" />
+            <div class="check-card-content">
+              <div class="check-card-title">Destacada en home</div>
+              <div class="check-card-desc">Aparece en la sección principal.</div>
+            </div>
+          </label>
+          <label class="check-card">
+            <input type="checkbox" id="form-curado" />
+            <div class="check-card-content">
+              <div class="check-card-title">Curada editorialmente</div>
+              <div class="check-card-desc">Muestra badge "Curado" en la card.</div>
+            </div>
+          </label>
+          <label class="check-card">
+            <input type="checkbox" id="form-verificado" />
+            <div class="check-card-content">
+              <div class="check-card-title">Vendedor verificado</div>
+              <div class="check-card-desc">Muestra badge "Verificado" en la card.</div>
+            </div>
           </label>
         </div>
       </div>
-      <div class="modal-footer">
-        <button onclick="cerrarFormulario()" class="btn-cancelar">Cancelar</button>
-        <button onclick="guardarObra()" class="btn-guardar" id="btn-guardar">Guardar obra</button>
+
+      <!-- DRAWER FOOTER FIJO -->
+      <div class="drawer-footer">
+        <div class="drawer-footer-nav">
+          <button onclick="tabAnterior()" class="btn-tab-nav" id="btn-anterior" style="display:none">← Anterior</button>
+          <button onclick="tabSiguiente()" class="btn-tab-nav" id="btn-siguiente">Siguiente →</button>
+        </div>
+        <div class="drawer-footer-actions">
+          <button onclick="cerrarDrawer()" class="btn-cancelar">Cancelar</button>
+          <button onclick="guardarObra()" class="btn-guardar" id="btn-guardar">Guardar obra</button>
+        </div>
       </div>
     </div>
   </div>
