@@ -1,18 +1,17 @@
 /* =========================================
-   OBRA VIVA · admin.js · Etapa 1
-   TODO: reemplazar password por Supabase Auth
+   OBRA VIVA · admin.js · Etapa 2
+   TODO: migrar a Supabase Auth
    ========================================= */
 
 const SUPABASE_URL = 'https://kcslaqmxxmcprkjhaidm.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtjc2xhcW14eG1jcHJramhhaWRtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY3Mjg3MTQsImV4cCI6MjA5MjMwNDcxNH0.ZV-NRcGmrywoXLgWMj8sBvHbbxzcX3nzfKL1DhFnpX0';
-
-// TODO: migrar a Supabase Auth en próxima etapa
 const ADMIN_PASSWORD = 'obraviva2026';
 
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-let obrasCache  = [];
+let obrasCache     = [];
 let idParaEliminar = null;
+let tabActual      = 0;
 
 /* =========================================
    LOGIN
@@ -22,19 +21,17 @@ function intentarLogin() {
   const err  = document.getElementById('login-error');
   if (pass === ADMIN_PASSWORD) {
     document.getElementById('login-screen').style.display  = 'none';
-    document.getElementById('admin-panel').style.display   = 'grid';
+    document.getElementById('admin-panel').style.display   = 'flex';
     iniciarAdmin();
   } else {
-    err.textContent = 'Contraseña incorrecta. Intentá de nuevo.';
+    err.textContent = 'Contraseña incorrecta.';
     document.getElementById('login-password').value = '';
     document.getElementById('login-password').focus();
   }
 }
-
 document.getElementById('login-password').addEventListener('keydown', e => {
   if (e.key === 'Enter') intentarLogin();
 });
-
 function cerrarSesion() {
   document.getElementById('admin-panel').style.display  = 'none';
   document.getElementById('login-screen').style.display = 'flex';
@@ -42,19 +39,13 @@ function cerrarSesion() {
 }
 
 /* =========================================
-   NAVEGACIÓN INTERNA
+   NAVEGACIÓN
    ========================================= */
 function mostrarSeccion(seccion) {
   document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
   const nav = document.getElementById('nav-' + seccion);
   if (nav) nav.classList.add('active');
-
-  const titulo = document.getElementById('page-title');
-  if (seccion === 'dashboard') {
-    titulo.textContent = 'Dashboard';
-  } else {
-    titulo.textContent = 'Gestión de obras';
-  }
+  document.getElementById('page-title').textContent = seccion === 'dashboard' ? 'Dashboard' : 'Gestión de obras';
 }
 
 /* =========================================
@@ -71,10 +62,10 @@ async function verificarConexion() {
   const texto = document.getElementById('status-text');
   const { error } = await sb.from('obras').select('id').limit(1);
   if (error) {
-    dot.className  = 'status-dot error';
+    dot.className = 'status-dot error';
     texto.textContent = 'Sin conexión';
   } else {
-    dot.className  = 'status-dot conectado';
+    dot.className = 'status-dot conectado';
     texto.textContent = 'Conectado';
   }
 }
@@ -98,24 +89,13 @@ async function actualizarMetricas() {
    ========================================= */
 async function cargarObras() {
   mostrarLoading(true);
-  const { data, error } = await sb
-    .from('obras')
-    .select('*')
-    .order('created_at', { ascending: false });
-
+  const { data, error } = await sb.from('obras').select('*').order('created_at', { ascending: false });
   mostrarLoading(false);
-
-  if (error) {
-    mostrarMsg('Error al cargar obras: ' + error.message, 'error');
-    return;
-  }
+  if (error) { mostrarMsg('Error al cargar obras: ' + error.message, 'error'); return; }
   obrasCache = data || [];
   renderizarTabla(obrasCache);
 }
 
-/* =========================================
-   RENDERIZAR TABLA
-   ========================================= */
 function renderizarTabla(obras) {
   const tbody = document.getElementById('tabla-body');
   const tabla = document.getElementById('tabla-obras');
@@ -151,18 +131,9 @@ function renderizarTabla(obras) {
 
     return `<tr>
       <td>${img}</td>
-      <td>
-        <div class="tabla-titulo">${obra.titulo}</div>
-        <div class="tabla-fecha">${fecha}</div>
-      </td>
-      <td>
-        ${obra.categoria || '—'}
-        ${obra.subcategoria ? `<br><span style="font-size:10px;color:#9A9590">${obra.subcategoria}</span>` : ''}
-      </td>
-      <td>
-        ${obra.artista_vendedor || '—'}
-        ${tipo ? `<br><span style="font-size:10px;color:#9A9590">${tipo}</span>` : ''}
-      </td>
+      <td><div class="tabla-titulo">${obra.titulo}</div><div class="tabla-fecha">${fecha}</div></td>
+      <td>${obra.categoria || '—'}${obra.subcategoria ? `<br><span style="font-size:10px;color:#9A9590">${obra.subcategoria}</span>` : ''}</td>
+      <td>${obra.artista_vendedor || '—'}${tipo ? `<br><span style="font-size:10px;color:#9A9590">${tipo}</span>` : ''}</td>
       <td>${obra.provincia || '—'}</td>
       <td style="white-space:nowrap;font-weight:500">${precio}</td>
       <td><span class="estado-pill ${obra.estado || ''}">${obra.estado || '—'}</span></td>
@@ -173,7 +144,7 @@ function renderizarTabla(obras) {
           <button class="btn-accion editar" onclick="editarObra('${obra.id}')">Editar</button>
           ${accionDesact}
           <div class="btn-accion-sep"></div>
-          <button class="btn-accion eliminar" onclick="confirmarEliminar('${obra.id}')" title="Eliminar definitivamente">✕</button>
+          <button class="btn-accion eliminar" onclick="confirmarEliminar('${obra.id}')" title="Eliminar">✕</button>
         </div>
       </td>
     </tr>`;
@@ -190,16 +161,8 @@ function formatPrecio(precio, moneda) {
 }
 
 function capitalizarTipo(tipo) {
-  if (!tipo) return '';
-  const map = {
-    artista:       'Artista',
-    galeria:       'Galería',
-    anticuario:    'Anticuario',
-    coleccionista: 'Coleccionista',
-    feria:         'Feria',
-    especialista:  'Especialista',
-  };
-  return map[tipo] || tipo;
+  const map = { artista:'Artista', galeria:'Galería', anticuario:'Anticuario', coleccionista:'Coleccionista', feria:'Feria', especialista:'Especialista' };
+  return map[tipo] || tipo || '';
 }
 
 /* =========================================
@@ -215,13 +178,13 @@ function aplicarFiltros() {
   const activo    = document.getElementById('filtro-activo').value;
 
   const resultado = obrasCache.filter(obra => {
-    const matchBuscar    = !buscar || (obra.titulo || '').toLowerCase().includes(buscar) || (obra.artista_vendedor || '').toLowerCase().includes(buscar);
+    const matchBuscar    = !buscar || (obra.titulo||'').toLowerCase().includes(buscar) || (obra.artista_vendedor||'').toLowerCase().includes(buscar);
     const matchCat       = !categoria || obra.categoria === categoria;
     const matchEstado    = !estado    || obra.estado === estado;
     const matchProvincia = !provincia || obra.provincia === provincia;
     const matchDestacado = destacado === '' ? true : obra.destacado === (destacado === 'true');
     const matchImagen    = !imagen || (imagen === 'con' ? !!obra.imagen_portada : !obra.imagen_portada);
-    const matchActivo    = activo === ''   ? true : obra.activo === (activo === 'true');
+    const matchActivo    = activo === '' ? true : obra.activo === (activo === 'true');
     return matchBuscar && matchCat && matchEstado && matchProvincia && matchDestacado && matchImagen && matchActivo;
   });
 
@@ -235,11 +198,14 @@ function limpiarFiltros() {
 }
 
 /* =========================================
-   FORMULARIO
+   DRAWER — ABRIR / CERRAR
    ========================================= */
-function abrirFormulario(obra = null) {
+function abrirDrawer(obra = null) {
   limpiarFormulario();
-  document.getElementById('modal-title').textContent = obra ? 'Editar obra' : 'Nueva obra';
+  irTab(0);
+
+  document.getElementById('drawer-title').textContent    = obra ? 'Editar obra' : 'Nueva obra';
+  document.getElementById('drawer-subtitle').textContent = obra ? 'Modificá los datos de esta pieza' : 'Completá los datos para publicar en OBRA VIVA';
 
   if (obra) {
     document.getElementById('form-id').value            = obra.id;
@@ -251,11 +217,14 @@ function abrirFormulario(obra = null) {
     document.getElementById('form-whatsapp').value      = obra.whatsapp_contacto || '';
     document.getElementById('form-provincia').value     = obra.provincia || '';
     document.getElementById('form-ciudad').value        = obra.ciudad || '';
+    document.getElementById('form-descripcion').value   = obra.descripcion || '';
     document.getElementById('form-precio').value        = obra.precio || '';
     document.getElementById('form-moneda').value        = obra.moneda || 'ARS';
     document.getElementById('form-modo').value          = obra.modo_venta || 'venta_directa';
     document.getElementById('form-estado').value        = obra.estado || 'disponible';
     document.getElementById('form-orden').value         = obra.orden || 0;
+    document.getElementById('form-precio-base').value   = obra.precio_base || '';
+    if (obra.fecha_cierre_subasta) document.getElementById('form-fecha-cierre').value = obra.fecha_cierre_subasta.slice(0,16);
     document.getElementById('form-tecnica').value       = obra.tecnica || '';
     document.getElementById('form-medidas').value       = obra.medidas || '';
     document.getElementById('form-anio').value          = obra.anio || '';
@@ -263,51 +232,53 @@ function abrirFormulario(obra = null) {
     document.getElementById('form-origen').value        = obra.origen || '';
     document.getElementById('form-material').value      = obra.material || '';
     document.getElementById('form-estilo').value        = obra.estilo || '';
-    document.getElementById('form-descripcion').value   = obra.descripcion || '';
     document.getElementById('form-imagen').value        = obra.imagen_portada || '';
-    document.getElementById('form-precio-base').value   = obra.precio_base || '';
-    if (obra.fecha_cierre_subasta) {
-      document.getElementById('form-fecha-cierre').value = obra.fecha_cierre_subasta.slice(0,16);
-    }
     document.getElementById('form-destacado').checked  = obra.destacado  || false;
     document.getElementById('form-curado').checked     = obra.curado     || false;
     document.getElementById('form-verificado').checked = obra.verificado || false;
     document.getElementById('form-activo').checked     = obra.activo !== false;
 
     if (obra.imagen_portada) {
-      document.getElementById('imagen-preview').src             = obra.imagen_portada;
-      document.getElementById('imagen-preview-wrap').style.display = 'block';
+      document.getElementById('imagen-preview').src              = obra.imagen_portada;
+      document.getElementById('imagen-preview-grande').style.display = 'block';
+      document.getElementById('imagen-upload-zone').style.display    = 'none';
     }
 
     toggleCamposSubasta();
   }
 
-  document.getElementById('modal-overlay').style.display = 'flex';
+  document.getElementById('drawer-overlay').style.display = 'flex';
+  setTimeout(() => document.getElementById('drawer').classList.add('abierto'), 10);
 }
 
 function editarObra(id) {
   const obra = obrasCache.find(o => o.id === id);
-  if (obra) abrirFormulario(obra);
+  if (obra) abrirDrawer(obra);
 }
 
-function cerrarFormulario() {
-  document.getElementById('modal-overlay').style.display = 'none';
-  limpiarFormulario();
+function cerrarDrawer() {
+  document.getElementById('drawer').classList.remove('abierto');
+  setTimeout(() => {
+    document.getElementById('drawer-overlay').style.display = 'none';
+    limpiarFormulario();
+  }, 300);
 }
 
-function cerrarModalSiOverlay(e) {
-  if (e.target === document.getElementById('modal-overlay')) cerrarFormulario();
+function cerrarDrawerSiOverlay(e) {
+  if (e.target === document.getElementById('drawer-overlay')) cerrarDrawer();
 }
 
 function limpiarFormulario() {
-  const campos = ['form-titulo','form-artista','form-subcategoria','form-whatsapp',
-    'form-provincia','form-ciudad','form-precio','form-orden','form-tecnica',
-    'form-medidas','form-anio','form-epoca','form-origen','form-material',
-    'form-estilo','form-descripcion','form-imagen','form-precio-base','form-fecha-cierre'];
-  campos.forEach(id => { const el = document.getElementById(id); if(el) el.value = ''; });
-  document.getElementById('form-id').value           = '';
+  document.getElementById('form-id').value = '';
+  ['form-titulo','form-artista','form-subcategoria','form-whatsapp','form-ciudad',
+   'form-descripcion','form-precio','form-orden','form-precio-base','form-fecha-cierre',
+   'form-tecnica','form-medidas','form-anio','form-epoca','form-origen','form-material',
+   'form-estilo','form-imagen']
+    .forEach(id => { const el = document.getElementById(id); if(el) el.value = ''; });
+
   document.getElementById('form-categoria').value    = '';
   document.getElementById('form-tipo-vendedor').value= '';
+  document.getElementById('form-provincia').value    = '';
   document.getElementById('form-moneda').value       = 'ARS';
   document.getElementById('form-modo').value         = 'venta_directa';
   document.getElementById('form-estado').value       = 'disponible';
@@ -315,9 +286,44 @@ function limpiarFormulario() {
   document.getElementById('form-curado').checked     = false;
   document.getElementById('form-verificado').checked = false;
   document.getElementById('form-activo').checked     = true;
-  document.getElementById('imagen-preview-wrap').style.display = 'none';
-  document.getElementById('form-imagen-file').value  = '';
-  document.getElementById('campos-subasta').style.display = 'none';
+  document.getElementById('imagen-preview-grande').style.display = 'none';
+  document.getElementById('imagen-upload-zone').style.display    = 'block';
+  document.getElementById('form-imagen-file').value              = '';
+  document.getElementById('campos-subasta').style.display        = 'none';
+
+  ['err-titulo','err-artista','err-categoria','err-tipo'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = '';
+  });
+  ['form-titulo','form-artista','form-categoria','form-tipo-vendedor'].forEach(id => {
+    document.getElementById(id)?.classList.remove('error-field');
+  });
+}
+
+/* =========================================
+   TABS
+   ========================================= */
+function irTab(n) {
+  const total = 5;
+  tabActual = n;
+
+  for (let i = 0; i < total; i++) {
+    const tab  = document.getElementById(`tab-${i}`);
+    const body = document.getElementById(`drawer-tab-${i}`);
+    if (tab)  tab.classList.toggle('active', i === n);
+    if (body) body.style.display = i === n ? 'block' : 'none';
+  }
+
+  document.getElementById('btn-anterior').style.display = n > 0 ? 'inline-block' : 'none';
+  document.getElementById('btn-siguiente').style.display = n < total - 1 ? 'inline-block' : 'none';
+}
+
+function tabSiguiente() {
+  if (tabActual < 4) irTab(tabActual + 1);
+}
+
+function tabAnterior() {
+  if (tabActual > 0) irTab(tabActual - 1);
 }
 
 function toggleCamposSubasta() {
@@ -325,45 +331,91 @@ function toggleCamposSubasta() {
   document.getElementById('campos-subasta').style.display = modo === 'subasta' ? 'block' : 'none';
 }
 
-function actualizarPreviewUrl() {
-  const url = document.getElementById('form-imagen').value.trim();
-  if (url) {
-    document.getElementById('imagen-preview').src             = url;
-    document.getElementById('imagen-preview-wrap').style.display = 'block';
-  } else {
-    document.getElementById('imagen-preview-wrap').style.display = 'none';
-  }
-}
-
+/* =========================================
+   IMAGEN
+   ========================================= */
 function previsualizarImagen() {
   const file = document.getElementById('form-imagen-file').files[0];
   if (!file) return;
+
+  if (file.size > 10 * 1024 * 1024) {
+    mostrarMsg('La imagen es muy grande. Recomendamos menos de 5MB.', 'error');
+    return;
+  }
+
   const reader = new FileReader();
   reader.onload = e => {
-    document.getElementById('imagen-preview').src             = e.target.result;
-    document.getElementById('imagen-preview-wrap').style.display = 'block';
+    document.getElementById('imagen-preview').src              = e.target.result;
+    document.getElementById('imagen-preview-grande').style.display = 'block';
+    document.getElementById('imagen-upload-zone').style.display    = 'none';
   };
   reader.readAsDataURL(file);
+}
+
+function actualizarPreviewUrl() {
+  const url = document.getElementById('form-imagen').value.trim();
+  if (url) {
+    document.getElementById('imagen-preview').src              = url;
+    document.getElementById('imagen-preview-grande').style.display = 'block';
+    document.getElementById('imagen-upload-zone').style.display    = 'none';
+  }
+}
+
+function reemplazarImagen() {
+  document.getElementById('imagen-preview-grande').style.display = 'none';
+  document.getElementById('imagen-upload-zone').style.display    = 'block';
+  document.getElementById('form-imagen-file').value              = '';
+  document.getElementById('form-imagen').value                   = '';
+}
+
+function quitarImagen() {
+  reemplazarImagen();
+}
+
+/* =========================================
+   VALIDACIÓN
+   ========================================= */
+function validarFormulario() {
+  let valido = true;
+
+  const campos = [
+    { id: 'form-titulo',       err: 'err-titulo',   msg: 'El título es obligatorio.' },
+    { id: 'form-artista',      err: 'err-artista',  msg: 'El artista o vendedor es obligatorio.' },
+    { id: 'form-categoria',    err: 'err-categoria', msg: 'Seleccioná una categoría.' },
+    { id: 'form-tipo-vendedor',err: 'err-tipo',      msg: 'Seleccioná el tipo de vendedor.' },
+  ];
+
+  campos.forEach(({ id, err, msg }) => {
+    const el    = document.getElementById(id);
+    const errEl = document.getElementById(err);
+    if (!el.value.trim()) {
+      el.classList.add('error-field');
+      if (errEl) errEl.textContent = msg;
+      valido = false;
+    } else {
+      el.classList.remove('error-field');
+      if (errEl) errEl.textContent = '';
+    }
+  });
+
+  if (!valido) {
+    irTab(0);
+    mostrarMsg('Completá los campos obligatorios antes de guardar.', 'error');
+  }
+
+  return valido;
 }
 
 /* =========================================
    GUARDAR OBRA
    ========================================= */
 async function guardarObra() {
-  const id      = document.getElementById('form-id').value;
-  const titulo  = document.getElementById('form-titulo').value.trim();
-  const artista = document.getElementById('form-artista').value.trim();
-  const cat     = document.getElementById('form-categoria').value;
-  const tipo    = document.getElementById('form-tipo-vendedor').value;
+  if (!validarFormulario()) return;
 
-  if (!titulo || !artista || !cat || !tipo) {
-    mostrarMsg('Completá los campos obligatorios: título, artista, categoría y tipo de vendedor.', 'error');
-    return;
-  }
-
+  const id  = document.getElementById('form-id').value;
   const btn = document.getElementById('btn-guardar');
-  btn.disabled     = true;
-  btn.textContent  = 'Guardando…';
+  btn.disabled    = true;
+  btn.textContent = 'Guardando…';
 
   let imagenUrl = document.getElementById('form-imagen').value.trim() || null;
   const file    = document.getElementById('form-imagen-file').files[0];
@@ -372,34 +424,34 @@ async function guardarObra() {
   const modo = document.getElementById('form-modo').value;
 
   const datos = {
-    titulo,
-    artista_vendedor:   artista,
-    categoria:          cat,
-    subcategoria:       document.getElementById('form-subcategoria').value.trim() || null,
-    tipo_vendedor:      tipo,
-    whatsapp_contacto:  document.getElementById('form-whatsapp').value.trim() || null,
-    provincia:          document.getElementById('form-provincia').value.trim() || null,
-    ciudad:             document.getElementById('form-ciudad').value.trim() || null,
-    precio:             document.getElementById('form-precio').value || null,
-    moneda:             document.getElementById('form-moneda').value,
-    modo_venta:         modo,
-    estado:             document.getElementById('form-estado').value,
-    orden:              parseInt(document.getElementById('form-orden').value) || 0,
-    tecnica:            document.getElementById('form-tecnica').value.trim() || null,
-    medidas:            document.getElementById('form-medidas').value.trim() || null,
-    anio:               document.getElementById('form-anio').value.trim() || null,
-    epoca:              document.getElementById('form-epoca').value.trim() || null,
-    origen:             document.getElementById('form-origen').value.trim() || null,
-    material:           document.getElementById('form-material').value.trim() || null,
-    estilo:             document.getElementById('form-estilo').value.trim() || null,
-    descripcion:        document.getElementById('form-descripcion').value.trim() || null,
-    imagen_portada:     imagenUrl,
-    precio_base:        modo === 'subasta' ? (document.getElementById('form-precio-base').value || null) : null,
-    fecha_cierre_subasta: modo === 'subasta' ? (document.getElementById('form-fecha-cierre').value || null) : null,
-    destacado:          document.getElementById('form-destacado').checked,
-    curado:             document.getElementById('form-curado').checked,
-    verificado:         document.getElementById('form-verificado').checked,
-    activo:             document.getElementById('form-activo').checked,
+    titulo:              document.getElementById('form-titulo').value.trim(),
+    artista_vendedor:    document.getElementById('form-artista').value.trim(),
+    categoria:           document.getElementById('form-categoria').value,
+    subcategoria:        document.getElementById('form-subcategoria').value.trim() || null,
+    tipo_vendedor:       document.getElementById('form-tipo-vendedor').value,
+    whatsapp_contacto:   document.getElementById('form-whatsapp').value.trim() || null,
+    provincia:           document.getElementById('form-provincia').value || null,
+    ciudad:              document.getElementById('form-ciudad').value.trim() || null,
+    descripcion:         document.getElementById('form-descripcion').value.trim() || null,
+    precio:              document.getElementById('form-precio').value || null,
+    moneda:              document.getElementById('form-moneda').value,
+    modo_venta:          modo,
+    estado:              document.getElementById('form-estado').value,
+    orden:               parseInt(document.getElementById('form-orden').value) || 0,
+    precio_base:         modo === 'subasta' ? (document.getElementById('form-precio-base').value || null) : null,
+    fecha_cierre_subasta:modo === 'subasta' ? (document.getElementById('form-fecha-cierre').value || null) : null,
+    tecnica:             document.getElementById('form-tecnica').value.trim() || null,
+    medidas:             document.getElementById('form-medidas').value.trim() || null,
+    anio:                document.getElementById('form-anio').value.trim() || null,
+    epoca:               document.getElementById('form-epoca').value.trim() || null,
+    origen:              document.getElementById('form-origen').value.trim() || null,
+    material:            document.getElementById('form-material').value.trim() || null,
+    estilo:              document.getElementById('form-estilo').value.trim() || null,
+    imagen_portada:      imagenUrl,
+    destacado:           document.getElementById('form-destacado').checked,
+    curado:              document.getElementById('form-curado').checked,
+    verificado:          document.getElementById('form-verificado').checked,
+    activo:              document.getElementById('form-activo').checked,
   };
 
   let error;
@@ -416,7 +468,7 @@ async function guardarObra() {
     mostrarMsg('Error al guardar: ' + error.message, 'error');
   } else {
     mostrarMsg(id ? '✓ Obra actualizada correctamente.' : '✓ Obra creada correctamente.', 'ok');
-    cerrarFormulario();
+    cerrarDrawer();
     await cargarObras();
     await actualizarMetricas();
   }
