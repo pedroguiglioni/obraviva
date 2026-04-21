@@ -70,7 +70,7 @@ function initFiltros() {
 /* --- HELPERS --- */
 function formatPrecio(precio, moneda) {
   if (!precio) return 'Consultar';
-  const simbolo = moneda === 'ARS' ? '$' : 'U$D';
+  const simbolo = moneda === 'USD' ? 'U$D' : '$';
   return `${simbolo} ${Number(precio).toLocaleString('es-AR')}`;
 }
 
@@ -119,11 +119,11 @@ function botonesHTML(obra) {
 
 function imagenHTML(obra) {
   if (obra.imagen_portada) {
-    return `<img src="${obra.imagen_portada}" alt="${obra.titulo}" style="width:100%;height:100%;object-fit:cover;">`;
+    return `<img src="${obra.imagen_portada}" alt="${obra.titulo}" style="width:100%;height:100%;object-fit:cover;object-position:center center;display:block;">`;
   }
   const colores = ['#C8BAA8','#A8B8C0','#B4A890','#C0B4A4','#9AACB4','#B8C0A8','#C4B0A4'];
   const color = colores[Math.floor(Math.random() * colores.length)];
-  return `<div style="width:100%;height:100%;background:${color}"></div>`;
+  return `<div style="width:100%;height:100%;background:${color};min-height:100%;position:absolute;inset:0;"></div>`;
 }
 
 function cardObraHTML(obra) {
