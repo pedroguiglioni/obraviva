@@ -1,18 +1,17 @@
 /* =========================================
-   OBRA VIVA · admin.js
-   Panel de Administración
+   OBRA VIVA · admin.js · Etapa 1
    TODO: reemplazar password por Supabase Auth
    ========================================= */
 
 const SUPABASE_URL = 'https://kcslaqmxxmcprkjhaidm.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtjc2xhcW14eG1jcHJramhhaWRtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY3Mjg3MTQsImV4cCI6MjA5MjMwNDcxNH0.ZV-NRcGmrywoXLgWMj8sBvHbbxzcX3nzfKL1DhFnpX0';
 
-// TODO: mover a Supabase Auth cuando implementemos login real
+// TODO: migrar a Supabase Auth en próxima etapa
 const ADMIN_PASSWORD = 'obraviva2026';
 
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-let obrasCache = [];
+let obrasCache  = [];
 let idParaEliminar = null;
 
 /* =========================================
@@ -22,16 +21,17 @@ function intentarLogin() {
   const pass = document.getElementById('login-password').value;
   const err  = document.getElementById('login-error');
   if (pass === ADMIN_PASSWORD) {
-    document.getElementById('login-screen').style.display = 'none';
-    document.getElementById('admin-panel').style.display  = 'block';
+    document.getElementById('login-screen').style.display  = 'none';
+    document.getElementById('admin-panel').style.display   = 'grid';
     iniciarAdmin();
   } else {
-    err.textContent = 'Contraseña incorrecta.';
+    err.textContent = 'Contraseña incorrecta. Intentá de nuevo.';
     document.getElementById('login-password').value = '';
+    document.getElementById('login-password').focus();
   }
 }
 
-document.getElementById('login-password').addEventListener('keydown', function(e) {
+document.getElementById('login-password').addEventListener('keydown', e => {
   if (e.key === 'Enter') intentarLogin();
 });
 
@@ -42,7 +42,23 @@ function cerrarSesion() {
 }
 
 /* =========================================
-   INICIAR ADMIN
+   NAVEGACIÓN INTERNA
+   ========================================= */
+function mostrarSeccion(seccion) {
+  document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
+  const nav = document.getElementById('nav-' + seccion);
+  if (nav) nav.classList.add('active');
+
+  const titulo = document.getElementById('page-title');
+  if (seccion === 'dashboard') {
+    titulo.textContent = 'Dashboard';
+  } else {
+    titulo.textContent = 'Gestión de obras';
+  }
+}
+
+/* =========================================
+   INICIAR
    ========================================= */
 async function iniciarAdmin() {
   await verificarConexion();
@@ -51,15 +67,15 @@ async function iniciarAdmin() {
 }
 
 async function verificarConexion() {
-  const dot   = document.querySelector('.status-dot');
-  const texto = document.getElementById('supabase-status');
+  const dot   = document.getElementById('status-dot');
+  const texto = document.getElementById('status-text');
   const { error } = await sb.from('obras').select('id').limit(1);
   if (error) {
-    dot.className   = 'status-dot error';
-    texto.innerHTML = '<span class="status-dot error"></span> Sin conexión';
+    dot.className  = 'status-dot error';
+    texto.textContent = 'Sin conexión';
   } else {
-    dot.className   = 'status-dot conectado';
-    texto.innerHTML = '<span class="status-dot conectado"></span> Conectado';
+    dot.className  = 'status-dot conectado';
+    texto.textContent = 'Conectado';
   }
 }
 
@@ -87,16 +103,19 @@ async function cargarObras() {
     .select('*')
     .order('created_at', { ascending: false });
 
+  mostrarLoading(false);
+
   if (error) {
-    mostrarLoading(false);
     mostrarMsg('Error al cargar obras: ' + error.message, 'error');
     return;
   }
   obrasCache = data || [];
   renderizarTabla(obrasCache);
-  mostrarLoading(false);
 }
 
+/* =========================================
+   RENDERIZAR TABLA
+   ========================================= */
 function renderizarTabla(obras) {
   const tbody = document.getElementById('tabla-body');
   const tabla = document.getElementById('tabla-obras');
@@ -111,38 +130,76 @@ function renderizarTabla(obras) {
   tabla.style.display = '';
   vacia.style.display = 'none';
 
-  tbody.innerHTML = obras.map(obra => `
-    <tr>
-      <td>
-        ${obra.imagen_portada
-          ? `<img src="${obra.imagen_portada}" alt="${obra.titulo}" class="tabla-thumb" />`
-          : `<div class="tabla-thumb-placeholder">Sin img</div>`}
-      </td>
+  tbody.innerHTML = obras.map(obra => {
+    const precio = formatPrecio(obra.precio, obra.moneda);
+    const tipo   = capitalizarTipo(obra.tipo_vendedor);
+    const fecha  = obra.created_at ? new Date(obra.created_at).toLocaleDateString('es-AR') : '—';
+
+    const img = obra.imagen_portada
+      ? `<img src="${obra.imagen_portada}" alt="${obra.titulo}" class="tabla-thumb" />`
+      : `<div class="tabla-thumb-placeholder">Sin<br>imagen</div>`;
+
+    const badges = [
+      obra.curado     ? `<span class="badge-pill curado">Curado</span>`     : '',
+      obra.verificado ? `<span class="badge-pill verificado">Verif.</span>` : '',
+      obra.destacado  ? `<span class="badge-pill destacado">Dest.</span>`   : '',
+    ].filter(Boolean).join('') || '<span style="color:#C8C4BE;font-size:10px">—</span>';
+
+    const accionDesact = obra.activo
+      ? `<button class="btn-accion desactivar" onclick="desactivarObra('${obra.id}')">Desactivar</button>`
+      : `<button class="btn-accion activar" onclick="activarObra('${obra.id}')">Activar</button>`;
+
+    return `<tr>
+      <td>${img}</td>
       <td>
         <div class="tabla-titulo">${obra.titulo}</div>
-        <div style="font-size:10px;color:#9A9590;margin-top:2px">${obra.ciudad || ''}${obra.ciudad && obra.created_at ? ' · ' : ''}${obra.created_at ? new Date(obra.created_at).toLocaleDateString('es-AR') : ''}</div>
+        <div class="tabla-fecha">${fecha}</div>
       </td>
-      <td>${obra.categoria || '—'}<br><span style="font-size:10px;color:#9A9590">${obra.subcategoria || ''}</span></td>
-      <td>${obra.artista_vendedor || '—'}<br><span style="font-size:10px;color:#9A9590">${obra.tipo_vendedor || ''}</span></td>
-      <td>${obra.provincia || '—'}</td>
-      <td style="white-space:nowrap">${obra.precio ? '$ ' + Number(obra.precio).toLocaleString('es-AR') : 'Consultar'}</td>
-      <td><span class="estado-pill ${obra.estado}">${obra.estado || '—'}</span></td>
       <td>
-        ${obra.curado    ? '<span class="badge-pill curado">Curado</span>'     : ''}
-        ${obra.verificado? '<span class="badge-pill verificado">Verif.</span>' : ''}
-        ${obra.destacado ? '<span class="badge-pill curado">Dest.</span>'      : ''}
+        ${obra.categoria || '—'}
+        ${obra.subcategoria ? `<br><span style="font-size:10px;color:#9A9590">${obra.subcategoria}</span>` : ''}
       </td>
-      <td><span class="activo-pill ${obra.activo ? 'si' : 'no'}">${obra.activo ? '● Activa' : '○ Inactiva'}</span></td>
+      <td>
+        ${obra.artista_vendedor || '—'}
+        ${tipo ? `<br><span style="font-size:10px;color:#9A9590">${tipo}</span>` : ''}
+      </td>
+      <td>${obra.provincia || '—'}</td>
+      <td style="white-space:nowrap;font-weight:500">${precio}</td>
+      <td><span class="estado-pill ${obra.estado || ''}">${obra.estado || '—'}</span></td>
+      <td>${badges}</td>
+      <td><span class="${obra.activo ? 'activo-si' : 'activo-no'}">${obra.activo ? '● Activa' : '○ Inactiva'}</span></td>
       <td>
         <div class="acciones">
           <button class="btn-accion editar" onclick="editarObra('${obra.id}')">Editar</button>
-          ${obra.activo
-            ? `<button class="btn-accion" onclick="confirmarEliminar('${obra.id}')">Desactivar</button>`
-            : `<button class="btn-accion editar" onclick="activarObra('${obra.id}')">Activar</button>`}
-          <button class="btn-accion eliminar" onclick="confirmarEliminar('${obra.id}')">Eliminar</button>
+          ${accionDesact}
+          <div class="btn-accion-sep"></div>
+          <button class="btn-accion eliminar" onclick="confirmarEliminar('${obra.id}')" title="Eliminar definitivamente">✕</button>
         </div>
       </td>
-    </tr>`).join('');
+    </tr>`;
+  }).join('');
+}
+
+/* =========================================
+   HELPERS
+   ========================================= */
+function formatPrecio(precio, moneda) {
+  if (!precio) return '<span style="color:#9A9590">Consultar</span>';
+  const simbolo = moneda === 'USD' ? 'U$D' : '$';
+  return `${simbolo} ${Number(precio).toLocaleString('es-AR')}`;
+}
+
+function capitalizarTipo(tipo) {
+  if (!tipo) return '';
+  const map = {
+    artista:       'Artista',
+    galeria:       'Galería',
+    anticuario:    'Anticuario',
+    coleccionista: 'Coleccionista',
+    feria:         'Feria',
+    especialista:  'Especialista',
+  };
+  return map[tipo] || tipo;
 }
 
 /* =========================================
@@ -152,69 +209,77 @@ function aplicarFiltros() {
   const buscar    = document.getElementById('filtro-buscar').value.toLowerCase();
   const categoria = document.getElementById('filtro-categoria').value;
   const estado    = document.getElementById('filtro-estado').value;
+  const provincia = document.getElementById('filtro-provincia').value;
+  const destacado = document.getElementById('filtro-destacado').value;
+  const imagen    = document.getElementById('filtro-imagen').value;
   const activo    = document.getElementById('filtro-activo').value;
 
-  let resultado = obrasCache.filter(obra => {
-    const matchBuscar = !buscar ||
-      (obra.titulo && obra.titulo.toLowerCase().includes(buscar)) ||
-      (obra.artista_vendedor && obra.artista_vendedor.toLowerCase().includes(buscar));
-    const matchCat    = !categoria || obra.categoria === categoria;
-    const matchEstado = !estado    || obra.estado === estado;
-    const matchActivo = activo === '' ? true : obra.activo === (activo === 'true');
-    return matchBuscar && matchCat && matchEstado && matchActivo;
+  const resultado = obrasCache.filter(obra => {
+    const matchBuscar    = !buscar || (obra.titulo || '').toLowerCase().includes(buscar) || (obra.artista_vendedor || '').toLowerCase().includes(buscar);
+    const matchCat       = !categoria || obra.categoria === categoria;
+    const matchEstado    = !estado    || obra.estado === estado;
+    const matchProvincia = !provincia || obra.provincia === provincia;
+    const matchDestacado = destacado === '' ? true : obra.destacado === (destacado === 'true');
+    const matchImagen    = !imagen || (imagen === 'con' ? !!obra.imagen_portada : !obra.imagen_portada);
+    const matchActivo    = activo === ''   ? true : obra.activo === (activo === 'true');
+    return matchBuscar && matchCat && matchEstado && matchProvincia && matchDestacado && matchImagen && matchActivo;
   });
 
   renderizarTabla(resultado);
 }
 
 function limpiarFiltros() {
-  document.getElementById('filtro-buscar').value    = '';
-  document.getElementById('filtro-categoria').value = '';
-  document.getElementById('filtro-estado').value    = '';
-  document.getElementById('filtro-activo').value    = '';
+  ['filtro-buscar','filtro-categoria','filtro-estado','filtro-provincia','filtro-destacado','filtro-imagen','filtro-activo']
+    .forEach(id => { document.getElementById(id).value = ''; });
   renderizarTabla(obrasCache);
 }
 
 /* =========================================
-   FORMULARIO — ABRIR / CERRAR
+   FORMULARIO
    ========================================= */
 function abrirFormulario(obra = null) {
   limpiarFormulario();
   document.getElementById('modal-title').textContent = obra ? 'Editar obra' : 'Nueva obra';
 
   if (obra) {
-    document.getElementById('form-id').value          = obra.id;
-    document.getElementById('form-titulo').value      = obra.titulo || '';
-    document.getElementById('form-artista').value     = obra.artista_vendedor || '';
-    document.getElementById('form-categoria').value   = obra.categoria || '';
-    document.getElementById('form-subcategoria').value= obra.subcategoria || '';
-    document.getElementById('form-tipo-vendedor').value= obra.tipo_vendedor || '';
-    document.getElementById('form-whatsapp').value    = obra.whatsapp_contacto || '';
-    document.getElementById('form-provincia').value   = obra.provincia || '';
-    document.getElementById('form-ciudad').value      = obra.ciudad || '';
-    document.getElementById('form-precio').value      = obra.precio || '';
-    document.getElementById('form-moneda').value      = obra.moneda || 'ARS';
-    document.getElementById('form-modo').value        = obra.modo_venta || 'venta_directa';
-    document.getElementById('form-estado').value      = obra.estado || 'disponible';
-    document.getElementById('form-orden').value       = obra.orden || 0;
-    document.getElementById('form-tecnica').value     = obra.tecnica || '';
-    document.getElementById('form-medidas').value     = obra.medidas || '';
-    document.getElementById('form-anio').value        = obra.anio || '';
-    document.getElementById('form-epoca').value       = obra.epoca || '';
-    document.getElementById('form-origen').value      = obra.origen || '';
-    document.getElementById('form-material').value    = obra.material || '';
-    document.getElementById('form-estilo').value      = obra.estilo || '';
-    document.getElementById('form-descripcion').value = obra.descripcion || '';
-    document.getElementById('form-imagen').value      = obra.imagen_portada || '';
-    document.getElementById('form-destacado').checked = obra.destacado || false;
-    document.getElementById('form-curado').checked    = obra.curado || false;
-    document.getElementById('form-verificado').checked= obra.verificado || false;
-    document.getElementById('form-activo').checked    = obra.activo !== false;
+    document.getElementById('form-id').value            = obra.id;
+    document.getElementById('form-titulo').value        = obra.titulo || '';
+    document.getElementById('form-artista').value       = obra.artista_vendedor || '';
+    document.getElementById('form-categoria').value     = obra.categoria || '';
+    document.getElementById('form-subcategoria').value  = obra.subcategoria || '';
+    document.getElementById('form-tipo-vendedor').value = obra.tipo_vendedor || '';
+    document.getElementById('form-whatsapp').value      = obra.whatsapp_contacto || '';
+    document.getElementById('form-provincia').value     = obra.provincia || '';
+    document.getElementById('form-ciudad').value        = obra.ciudad || '';
+    document.getElementById('form-precio').value        = obra.precio || '';
+    document.getElementById('form-moneda').value        = obra.moneda || 'ARS';
+    document.getElementById('form-modo').value          = obra.modo_venta || 'venta_directa';
+    document.getElementById('form-estado').value        = obra.estado || 'disponible';
+    document.getElementById('form-orden').value         = obra.orden || 0;
+    document.getElementById('form-tecnica').value       = obra.tecnica || '';
+    document.getElementById('form-medidas').value       = obra.medidas || '';
+    document.getElementById('form-anio').value          = obra.anio || '';
+    document.getElementById('form-epoca').value         = obra.epoca || '';
+    document.getElementById('form-origen').value        = obra.origen || '';
+    document.getElementById('form-material').value      = obra.material || '';
+    document.getElementById('form-estilo').value        = obra.estilo || '';
+    document.getElementById('form-descripcion').value   = obra.descripcion || '';
+    document.getElementById('form-imagen').value        = obra.imagen_portada || '';
+    document.getElementById('form-precio-base').value   = obra.precio_base || '';
+    if (obra.fecha_cierre_subasta) {
+      document.getElementById('form-fecha-cierre').value = obra.fecha_cierre_subasta.slice(0,16);
+    }
+    document.getElementById('form-destacado').checked  = obra.destacado  || false;
+    document.getElementById('form-curado').checked     = obra.curado     || false;
+    document.getElementById('form-verificado').checked = obra.verificado || false;
+    document.getElementById('form-activo').checked     = obra.activo !== false;
 
     if (obra.imagen_portada) {
-      document.getElementById('imagen-preview').src    = obra.imagen_portada;
+      document.getElementById('imagen-preview').src             = obra.imagen_portada;
       document.getElementById('imagen-preview-wrap').style.display = 'block';
     }
+
+    toggleCamposSubasta();
   }
 
   document.getElementById('modal-overlay').style.display = 'flex';
@@ -235,33 +300,61 @@ function cerrarModalSiOverlay(e) {
 }
 
 function limpiarFormulario() {
-  document.getElementById('form-id').value = '';
-  ['form-titulo','form-artista','form-categoria','form-subcategoria',
-   'form-tipo-vendedor','form-whatsapp','form-provincia','form-ciudad',
-   'form-precio','form-tecnica','form-medidas','form-anio','form-epoca',
-   'form-origen','form-material','form-estilo','form-descripcion','form-imagen']
-    .forEach(id => { document.getElementById(id).value = ''; });
-  document.getElementById('form-moneda').value  = 'ARS';
-  document.getElementById('form-modo').value    = 'venta_directa';
-  document.getElementById('form-estado').value  = 'disponible';
-  document.getElementById('form-orden').value   = '0';
-  document.getElementById('form-destacado').checked = false;
-  document.getElementById('form-curado').checked    = false;
-  document.getElementById('form-verificado').checked= false;
-  document.getElementById('form-activo').checked    = true;
+  const campos = ['form-titulo','form-artista','form-subcategoria','form-whatsapp',
+    'form-provincia','form-ciudad','form-precio','form-orden','form-tecnica',
+    'form-medidas','form-anio','form-epoca','form-origen','form-material',
+    'form-estilo','form-descripcion','form-imagen','form-precio-base','form-fecha-cierre'];
+  campos.forEach(id => { const el = document.getElementById(id); if(el) el.value = ''; });
+  document.getElementById('form-id').value           = '';
+  document.getElementById('form-categoria').value    = '';
+  document.getElementById('form-tipo-vendedor').value= '';
+  document.getElementById('form-moneda').value       = 'ARS';
+  document.getElementById('form-modo').value         = 'venta_directa';
+  document.getElementById('form-estado').value       = 'disponible';
+  document.getElementById('form-destacado').checked  = false;
+  document.getElementById('form-curado').checked     = false;
+  document.getElementById('form-verificado').checked = false;
+  document.getElementById('form-activo').checked     = true;
   document.getElementById('imagen-preview-wrap').style.display = 'none';
-  document.getElementById('form-imagen-file').value = '';
+  document.getElementById('form-imagen-file').value  = '';
+  document.getElementById('campos-subasta').style.display = 'none';
+}
+
+function toggleCamposSubasta() {
+  const modo = document.getElementById('form-modo').value;
+  document.getElementById('campos-subasta').style.display = modo === 'subasta' ? 'block' : 'none';
+}
+
+function actualizarPreviewUrl() {
+  const url = document.getElementById('form-imagen').value.trim();
+  if (url) {
+    document.getElementById('imagen-preview').src             = url;
+    document.getElementById('imagen-preview-wrap').style.display = 'block';
+  } else {
+    document.getElementById('imagen-preview-wrap').style.display = 'none';
+  }
+}
+
+function previsualizarImagen() {
+  const file = document.getElementById('form-imagen-file').files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    document.getElementById('imagen-preview').src             = e.target.result;
+    document.getElementById('imagen-preview-wrap').style.display = 'block';
+  };
+  reader.readAsDataURL(file);
 }
 
 /* =========================================
-   GUARDAR OBRA (crear o editar)
+   GUARDAR OBRA
    ========================================= */
 async function guardarObra() {
-  const id    = document.getElementById('form-id').value;
-  const titulo = document.getElementById('form-titulo').value.trim();
-  const artista= document.getElementById('form-artista').value.trim();
-  const cat    = document.getElementById('form-categoria').value;
-  const tipo   = document.getElementById('form-tipo-vendedor').value;
+  const id      = document.getElementById('form-id').value;
+  const titulo  = document.getElementById('form-titulo').value.trim();
+  const artista = document.getElementById('form-artista').value.trim();
+  const cat     = document.getElementById('form-categoria').value;
+  const tipo    = document.getElementById('form-tipo-vendedor').value;
 
   if (!titulo || !artista || !cat || !tipo) {
     mostrarMsg('Completá los campos obligatorios: título, artista, categoría y tipo de vendedor.', 'error');
@@ -269,61 +362,60 @@ async function guardarObra() {
   }
 
   const btn = document.getElementById('btn-guardar');
-  btn.disabled = true;
-  btn.textContent = 'Guardando...';
+  btn.disabled     = true;
+  btn.textContent  = 'Guardando…';
 
-  // Subir imagen si hay archivo seleccionado
   let imagenUrl = document.getElementById('form-imagen').value.trim() || null;
-  const file = document.getElementById('form-imagen-file').files[0];
-  if (file) {
-    imagenUrl = await subirImagen(file, id || 'nueva');
-  }
+  const file    = document.getElementById('form-imagen-file').files[0];
+  if (file) imagenUrl = await subirImagen(file, id || 'nueva');
+
+  const modo = document.getElementById('form-modo').value;
 
   const datos = {
     titulo,
-    artista_vendedor:  artista,
-    categoria:         cat,
-    subcategoria:      document.getElementById('form-subcategoria').value.trim() || null,
-    tipo_vendedor:     tipo,
-    whatsapp_contacto: document.getElementById('form-whatsapp').value.trim() || null,
-    provincia:         document.getElementById('form-provincia').value.trim() || null,
-    ciudad:            document.getElementById('form-ciudad').value.trim() || null,
-    precio:            document.getElementById('form-precio').value || null,
-    moneda:            document.getElementById('form-moneda').value,
-    modo_venta:        document.getElementById('form-modo').value,
-    estado:            document.getElementById('form-estado').value,
-    orden:             parseInt(document.getElementById('form-orden').value) || 0,
-    tecnica:           document.getElementById('form-tecnica').value.trim() || null,
-    medidas:           document.getElementById('form-medidas').value.trim() || null,
-    anio:              document.getElementById('form-anio').value.trim() || null,
-    epoca:             document.getElementById('form-epoca').value.trim() || null,
-    origen:            document.getElementById('form-origen').value.trim() || null,
-    material:          document.getElementById('form-material').value.trim() || null,
-    estilo:            document.getElementById('form-estilo').value.trim() || null,
-    descripcion:       document.getElementById('form-descripcion').value.trim() || null,
-    imagen_portada:    imagenUrl,
-    destacado:         document.getElementById('form-destacado').checked,
-    curado:            document.getElementById('form-curado').checked,
-    verificado:        document.getElementById('form-verificado').checked,
-    activo:            document.getElementById('form-activo').checked,
+    artista_vendedor:   artista,
+    categoria:          cat,
+    subcategoria:       document.getElementById('form-subcategoria').value.trim() || null,
+    tipo_vendedor:      tipo,
+    whatsapp_contacto:  document.getElementById('form-whatsapp').value.trim() || null,
+    provincia:          document.getElementById('form-provincia').value.trim() || null,
+    ciudad:             document.getElementById('form-ciudad').value.trim() || null,
+    precio:             document.getElementById('form-precio').value || null,
+    moneda:             document.getElementById('form-moneda').value,
+    modo_venta:         modo,
+    estado:             document.getElementById('form-estado').value,
+    orden:              parseInt(document.getElementById('form-orden').value) || 0,
+    tecnica:            document.getElementById('form-tecnica').value.trim() || null,
+    medidas:            document.getElementById('form-medidas').value.trim() || null,
+    anio:               document.getElementById('form-anio').value.trim() || null,
+    epoca:              document.getElementById('form-epoca').value.trim() || null,
+    origen:             document.getElementById('form-origen').value.trim() || null,
+    material:           document.getElementById('form-material').value.trim() || null,
+    estilo:             document.getElementById('form-estilo').value.trim() || null,
+    descripcion:        document.getElementById('form-descripcion').value.trim() || null,
+    imagen_portada:     imagenUrl,
+    precio_base:        modo === 'subasta' ? (document.getElementById('form-precio-base').value || null) : null,
+    fecha_cierre_subasta: modo === 'subasta' ? (document.getElementById('form-fecha-cierre').value || null) : null,
+    destacado:          document.getElementById('form-destacado').checked,
+    curado:             document.getElementById('form-curado').checked,
+    verificado:         document.getElementById('form-verificado').checked,
+    activo:             document.getElementById('form-activo').checked,
   };
 
   let error;
   if (id) {
-    // EDITAR — UPDATE sin borrar
     ({ error } = await sb.from('obras').update(datos).eq('id', id));
   } else {
-    // CREAR — INSERT nueva obra
     ({ error } = await sb.from('obras').insert([datos]));
   }
 
-  btn.disabled = false;
+  btn.disabled    = false;
   btn.textContent = 'Guardar obra';
 
   if (error) {
     mostrarMsg('Error al guardar: ' + error.message, 'error');
   } else {
-    mostrarMsg(id ? 'Obra actualizada correctamente.' : 'Obra creada correctamente.', 'ok');
+    mostrarMsg(id ? '✓ Obra actualizada correctamente.' : '✓ Obra creada correctamente.', 'ok');
     cerrarFormulario();
     await cargarObras();
     await actualizarMetricas();
@@ -331,50 +423,44 @@ async function guardarObra() {
 }
 
 /* =========================================
-   SUBIR IMAGEN A SUPABASE STORAGE
+   SUBIR IMAGEN
    ========================================= */
 async function subirImagen(file, obraId) {
-  const ext      = file.name.split('.').pop();
-  const nombre   = `obra-${obraId}-${Date.now()}.${ext}`;
-  const { data, error } = await sb.storage
-    .from('obras-imagenes')
-    .upload(nombre, file, { upsert: true });
-
-  if (error) {
-    mostrarMsg('Error al subir imagen: ' + error.message, 'error');
-    return null;
-  }
+  const ext    = file.name.split('.').pop();
+  const nombre = `obra-${obraId}-${Date.now()}.${ext}`;
+  const { error } = await sb.storage.from('obras-imagenes').upload(nombre, file, { upsert: true });
+  if (error) { mostrarMsg('Error al subir imagen: ' + error.message, 'error'); return null; }
   const { data: urlData } = sb.storage.from('obras-imagenes').getPublicUrl(nombre);
   return urlData.publicUrl;
-}
-
-function previsualizarImagen() {
-  const file = document.getElementById('form-imagen-file').files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    document.getElementById('imagen-preview').src = e.target.result;
-    document.getElementById('imagen-preview-wrap').style.display = 'block';
-  };
-  reader.readAsDataURL(file);
 }
 
 /* =========================================
    DESACTIVAR / ACTIVAR
    ========================================= */
+async function desactivarObra(id) {
+  const { error } = await sb.from('obras').update({ activo: false }).eq('id', id);
+  if (error) {
+    mostrarMsg('Error al desactivar: ' + error.message, 'error');
+  } else {
+    mostrarMsg('✓ Obra desactivada. Sigue en la base de datos pero no aparece en la web.', 'ok');
+    await cargarObras();
+    await actualizarMetricas();
+  }
+}
+
 async function activarObra(id) {
   const { error } = await sb.from('obras').update({ activo: true }).eq('id', id);
   if (error) {
     mostrarMsg('Error al activar: ' + error.message, 'error');
   } else {
-    mostrarMsg('Obra activada correctamente.', 'ok');
+    mostrarMsg('✓ Obra activada correctamente.', 'ok');
     await cargarObras();
     await actualizarMetricas();
   }
 }
 
 /* =========================================
-   ELIMINAR — con doble confirmación
+   ELIMINAR
    ========================================= */
 function confirmarEliminar(id) {
   idParaEliminar = id;
@@ -384,19 +470,6 @@ function confirmarEliminar(id) {
 function cerrarConfirmar() {
   idParaEliminar = null;
   document.getElementById('modal-confirmar').style.display = 'none';
-}
-
-async function desactivarConfirmado() {
-  if (!idParaEliminar) return;
-  const { error } = await sb.from('obras').update({ activo: false }).eq('id', idParaEliminar);
-  cerrarConfirmar();
-  if (error) {
-    mostrarMsg('Error al desactivar: ' + error.message, 'error');
-  } else {
-    mostrarMsg('Obra desactivada. Sigue en la base de datos pero no aparece en la web.', 'ok');
-    await cargarObras();
-    await actualizarMetricas();
-  }
 }
 
 async function eliminarConfirmado() {
@@ -413,7 +486,7 @@ async function eliminarConfirmado() {
 }
 
 /* =========================================
-   HELPERS UI
+   UI HELPERS
    ========================================= */
 function mostrarLoading(show) {
   document.getElementById('tabla-loading').style.display = show ? 'block' : 'none';
@@ -425,8 +498,9 @@ function mostrarLoading(show) {
 
 function mostrarMsg(texto, tipo) {
   const el = document.getElementById('admin-msg');
-  el.textContent  = texto;
-  el.className    = `admin-msg ${tipo}`;
-  el.style.display = 'block';
-  setTimeout(() => { el.style.display = 'none'; }, 4000);
+  el.textContent   = texto;
+  el.className     = `admin-msg ${tipo}`;
+  el.style.display = 'flex';
+  clearTimeout(el._timeout);
+  el._timeout = setTimeout(() => { el.style.display = 'none'; }, 5000);
 }
