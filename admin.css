@@ -133,8 +133,7 @@ button { cursor: pointer; font-family: inherit; }
    LAYOUT GENERAL
    ========================================= */
 .admin-layout {
-  display: grid;
-  grid-template-columns: var(--sidebar-w) 1fr;
+  display: flex;
   min-height: 100vh;
 }
 
@@ -264,9 +263,11 @@ button { cursor: pointer; font-family: inherit; }
    ========================================= */
 .admin-main {
   margin-left: var(--sidebar-w);
+  width: calc(100% - var(--sidebar-w));
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  overflow-x: hidden;
 }
 
 .admin-header {
