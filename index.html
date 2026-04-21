@@ -1,0 +1,1361 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OBRA VIVA · Marketplace Cultural Argentino</title>
+  <meta name="description" content="Descubrí, comprá, vendé y subastá arte, antigüedades y piezas únicas. El marketplace cultural argentino." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <!-- ========== TOPBAR ========== -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <span class="live-dot"></span>
+      <span>Subasta activa · <strong>Colección Maestros Rioplatenses</strong> · Cierra en <span id="countdown">02:14:38</span></span>
+      <span class="topbar-sep">|</span>
+      <a href="#subastas" class="topbar-link">Ver subasta →</a>
+    </div>
+    <div class="topbar-right">
+      <span>Desde Corrientes hacia toda Argentina</span>
+      <span class="topbar-sep">|</span>
+      <a href="#contacto" class="topbar-link">Ayuda</a>
+      <span class="topbar-sep">|</span>
+      <a href="https://wa.me/5493624000000" target="_blank" class="topbar-link">WhatsApp</a>
+      <!-- TODO: reemplazar 5493624000000 por número real antes del lanzamiento -->
+    </div>
+  </div>
+
+  <!-- ========== HEADER ========== -->
+  <header class="header">
+    <div class="header-top">
+
+      <div class="logo-wrap">
+        <a href="/" class="logo">OBRA<span>VIVA</span></a>
+        <div class="logo-sub">Marketplace cultural argentino</div>
+      </div>
+
+      <div class="search-wrap">
+        <input
+          type="text"
+          id="search-input"
+          class="search-input"
+          placeholder="Buscar obras, artistas, antigüedades, galerías o coleccionables…"
+          autocomplete="off"
+        />
+        <button class="search-btn" aria-label="Buscar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="7"/>
+            <line x1="16.5" y1="16.5" x2="22" y2="22"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="header-actions">
+        <a href="#vender" class="btn-publicar">Publicar obra</a>
+        <a href="#ingresar" class="btn-ingresar">Ingresar</a>
+      </div>
+
+    </div>
+
+    <!-- NAV MARKETPLACE -->
+    <nav class="nav-marketplace">
+      <a href="#catalogo" class="nav-item">Comprar</a>
+      <a href="#vender" class="nav-item">Vender</a>
+      <a href="#subastas" class="nav-item nav-highlight">Subastas</a>
+      <a href="#artistas" class="nav-item">Artistas</a>
+      <a href="#galerias" class="nav-item">Galerías</a>
+      <a href="#anticuarios" class="nav-item">Anticuarios <span class="nav-sub">perfiles</span></a>
+      <a href="#catalogo" class="nav-item">Antigüedades <span class="nav-sub">categoría</span></a>
+      <a href="#ferias" class="nav-item nav-new">Ferias</a>
+      <a href="#magazine" class="nav-item">Magazine</a>
+    </nav>
+  </header>
+
+  <!-- ========== HERO ========== -->
+  <section class="hero">
+    <div class="hero-left">
+      <div class="hero-eyebrow">El marketplace cultural argentino</div>
+      <h1 class="hero-title">
+        Descubrí, comprá,<br>
+        vendé y subastá<br>
+        <em>arte, antigüedades</em><br>
+        <em>y piezas únicas</em>
+      </h1>
+      <p class="hero-desc">
+        Conectamos artistas, galerías, anticuarios y coleccionistas de todo el país. Pinturas, esculturas, orfebrería, muebles antiguos y objetos con valor cultural.
+      </p>
+      <div class="hero-dual">
+        <a href="#catalogo" class="hero-btn comprador">
+          Explorar obras
+          <small>Soy comprador</small>
+        </a>
+        <a href="#vender" class="hero-btn vendedor">
+          Publicar pieza
+          <small>Soy vendedor</small>
+        </a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <div class="stat-n">+500</div>
+          <div class="stat-l">Obras seleccionadas</div>
+        </div>
+        <div class="stat">
+          <div class="stat-n">+80</div>
+          <div class="stat-l">Artistas y espacios</div>
+        </div>
+        <div class="stat">
+          <div class="stat-n">12</div>
+          <div class="stat-l">Subastas curadas</div>
+        </div>
+        <div class="stat">
+          <div class="stat-n">8</div>
+          <div class="stat-l">Provincias conectadas</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <div class="hero-cell hero-cell-main">
+        <div class="hero-cell-badge">Obra destacada del mes</div>
+        <div class="hero-cell-price">$ 280.000</div>
+        <div class="hero-cell-meta">
+          <div class="hero-cell-title">Tarde en el Iberá · Carlos Méndez</div>
+          <div class="hero-cell-sub">Óleo sobre tela · 80 × 100 cm · Corrientes</div>
+        </div>
+      </div>
+      <div class="hero-cell hero-cell-b">
+        <div class="hero-cell-meta">
+          <div class="hero-cell-title" style="font-size:12px">Figura en reposo</div>
+          <div class="hero-cell-sub">Escultura · Bronce · Buenos Aires</div>
+        </div>
+      </div>
+      <div class="hero-cell hero-cell-c">
+        <div class="hero-cell-meta">
+          <div class="hero-cell-title" style="font-size:12px">Jarro colonial s. XVIII</div>
+          <div class="hero-cell-sub">Orfebrería · Plata · Córdoba</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== BÚSQUEDAS POPULARES ========== -->
+  <div class="search-pills">
+    <span class="pills-label">Tendencias:</span>
+    <a href="#" class="pill">Óleos argentinos</a>
+    <a href="#" class="pill">Platería criolla</a>
+    <a href="#" class="pill">Arte contemporáneo</a>
+    <a href="#" class="pill">Muebles antiguos</a>
+    <a href="#" class="pill">Esculturas en bronce</a>
+    <a href="#" class="pill">Arte religioso</a>
+    <a href="#" class="pill">Libros antiguos</a>
+    <a href="#" class="pill">Coleccionables</a>
+  </div>
+
+  <!-- ========== BLOQUE 2: CONFIANZA ========== -->
+  <section class="trust">
+    <div class="trust-label">Por qué elegir OBRA VIVA</div>
+    <div class="trust-grid">
+      <div class="trust-item">
+        <div class="trust-icon"><svg viewBox="0 0 24 24"><path d="M12 2L3 7v5c0 5.25 3.75 10.15 9 11.35C17.25 22.15 21 17.25 21 12V7L12 2z"/></svg></div>
+        <div class="trust-title">Vendedores verificados</div>
+        <div class="trust-desc">Cada perfil es revisado antes de publicar</div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9 12l2 2 4-4"/></svg></div>
+        <div class="trust-title">Obras curadas</div>
+        <div class="trust-desc">Selección editorial con criterio cultural</div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+        <div class="trust-title">Consultas seguras</div>
+        <div class="trust-desc">Canal directo por WhatsApp o plataforma</div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <div class="trust-title">Acompañamiento</div>
+        <div class="trust-desc">Te asistimos en cada compra y venta</div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-icon"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg></div>
+        <div class="trust-title">Presencia nacional</div>
+        <div class="trust-desc">Artistas y piezas de toda Argentina</div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-icon"><svg viewBox="0 0 24 24"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg></div>
+        <div class="trust-title">Piezas únicas</div>
+        <div class="trust-desc">Objetos con historia, valor y significado</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== BLOQUE 2: CATEGORÍAS ========== -->
+  <section class="sec" id="catalogo">
+    <div class="sec-head">
+      <div>
+        <h2 class="sec-title">Explorar por categoría</h2>
+        <div class="sec-sub">Arte, antigüedades y objetos únicos de toda Argentina</div>
+      </div>
+      <a href="#catalogo" class="sec-link">Ver todo el catálogo →</a>
+    </div>
+    <div class="cats-grid">
+      <div class="cat-card">
+        <div class="cat-num">01</div>
+        <div class="cat-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M3 14l5-5 4 4 3-3 6 4"/><circle cx="8.5" cy="8.5" r="1.5"/></svg></div>
+        <div class="cat-name">Pinturas</div>
+        <div class="cat-desc">Óleos, acuarelas, acrílicos, técnica mixta</div>
+        <div class="cat-arrow">→</div>
+      </div>
+      <div class="cat-card">
+        <div class="cat-num">02</div>
+        <div class="cat-icon"><svg viewBox="0 0 24 24"><path d="M12 2C8 2 5 6 5 10c0 3 2 5.5 5 6.5V20h4v-3.5c3-1 5-3.5 5-6.5 0-4-3-8-7-8z"/></svg></div>
+        <div class="cat-name">Esculturas</div>
+        <div class="cat-desc">Bronce, mármol, cerámica, madera</div>
+        <div class="cat-arrow">→</div>
+      </div>
+      <div class="cat-card">
+        <div class="cat-num">03</div>
+        <div class="cat-icon"><svg viewBox="0 0 24 24"><path d="M12 2l2 7h7l-5.5 4 2 7L12 16l-5.5 4 2-7L3 9h7z"/></svg></div>
+        <div class="cat-name">Antigüedades</div>
+        <div class="cat-desc">Objetos, relojes, porcelanas, mobiliario</div>
+        <div class="cat-arrow">→</div>
+      </div>
+      <div class="cat-card">
+        <div class="cat-num">04</div>
+        <div class="cat-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M8 14l-2 7h12l-2-7"/></svg></div>
+        <div class="cat-name">Orfebrería</div>
+        <div class="cat-desc">Plata, oro, platería criolla, joyas</div>
+        <div class="cat-arrow">→</div>
+      </div>
+    </div>
+    <div class="cats-secondary">
+      <a href="#catalogo" class="cat-small"><span class="cat-small-name">Muebles antiguos</span><span class="cat-small-ver">Ver →</span></a>
+      <a href="#catalogo" class="cat-small"><span class="cat-small-name">Arte contemporáneo</span><span class="cat-small-ver">Ver →</span></a>
+      <a href="#catalogo" class="cat-small"><span class="cat-small-name">Arte religioso</span><span class="cat-small-ver">Ver →</span></a>
+      <a href="#catalogo" class="cat-small"><span class="cat-small-name">Coleccionables</span><span class="cat-small-ver">Ver →</span></a>
+      <a href="#catalogo" class="cat-small"><span class="cat-small-name">Libros y documentos</span><span class="cat-small-ver">Ver →</span></a>
+      <a href="#catalogo" class="cat-small"><span class="cat-small-name">Platería criolla</span><span class="cat-small-ver">Ver →</span></a>
+      <a href="#catalogo" class="cat-small"><span class="cat-small-name">Arte argentino</span><span class="cat-small-ver">Ver →</span></a>
+      <a href="#catalogo" class="cat-small"><span class="cat-small-name">Objetos decorativos</span><span class="cat-small-ver">Ver →</span></a>
+    </div>
+  </section>
+
+  <!-- ========== BLOQUE 2: QUIÉNES VENDEN ========== -->
+  <section class="sec" id="comunidad">
+    <div class="sec-head">
+      <div>
+        <h2 class="sec-title">Quiénes venden en OBRA VIVA</h2>
+        <div class="sec-sub">Una comunidad de referentes del arte y la cultura argentina</div>
+      </div>
+      <a href="#comunidad" class="sec-link">Ver todos los perfiles →</a>
+    </div>
+    <div class="vendedores-grid">
+      <div class="vend-card">
+        <div class="vend-tipo">Perfil · Creador</div>
+        <div class="vend-name">Artistas</div>
+        <div class="vend-desc">Pintores, escultores, grabadores y artistas visuales que publican y venden su obra directamente.</div>
+        <a href="#artistas" class="vend-btn">Ver artistas →</a>
+      </div>
+      <div class="vend-card">
+        <div class="vend-tipo">Perfil · Espacio</div>
+        <div class="vend-name">Galerías</div>
+        <div class="vend-desc">Espacios de arte que representan artistas y comercializan obras con criterio curatorial.</div>
+        <a href="#galerias" class="vend-btn">Ver galerías →</a>
+      </div>
+      <div class="vend-card">
+        <div class="vend-tipo">Perfil · Comercio</div>
+        <div class="vend-name">Anticuarios</div>
+        <div class="vend-desc">Especialistas en antigüedades, objetos de época, muebles y piezas con valor histórico.</div>
+        <a href="#anticuarios" class="vend-btn">Ver anticuarios →</a>
+      </div>
+      <div class="vend-card">
+        <div class="vend-tipo">Perfil · Particular</div>
+        <div class="vend-name">Coleccionistas</div>
+        <div class="vend-desc">Personas con colecciones privadas que deciden vender piezas seleccionadas a través de la plataforma.</div>
+        <a href="#catalogo" class="vend-btn">Ver coleccionistas →</a>
+      </div>
+      <div class="vend-card">
+        <div class="vend-tipo">Perfil · Evento</div>
+        <div class="vend-name">Ferias culturales</div>
+        <div class="vend-desc">Ferias de arte y antigüedades que se sincronizan con OBRA VIVA para vender online durante el evento.</div>
+        <a href="#ferias" class="vend-btn">Ver ferias →</a>
+      </div>
+      <div class="vend-card">
+        <div class="vend-tipo">Perfil · Especialista</div>
+        <div class="vend-name">Restauradores</div>
+        <div class="vend-desc">Profesionales que restauran, conservan y certifican obras. Próximamente con perfil propio.</div>
+        <a href="#comunidad" class="vend-btn">Conocer especialistas →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== BLOQUE 3: OBRAS DESTACADAS ========== -->
+  <section class="sec" id="obras-destacadas">
+    <div class="sec-head">
+      <div>
+        <h2 class="sec-title">Obras destacadas</h2>
+        <div class="sec-sub">Selección curada por el equipo editorial de OBRA VIVA</div>
+      </div>
+      <a href="#catalogo" class="sec-link">Ver catálogo completo →</a>
+    </div>
+
+    <div class="obras-filters">
+      <button class="obras-filter active">Todos</button>
+      <button class="obras-filter">Pinturas</button>
+      <button class="obras-filter">Esculturas</button>
+      <button class="obras-filter">Antigüedades</button>
+      <button class="obras-filter">Orfebrería</button>
+      <button class="obras-filter">Coleccionables</button>
+      <button class="obras-filter">Arte contemporáneo</button>
+    </div>
+
+    <div class="obras-grid">
+
+      <article class="obra-card">
+        <div class="obra-img obra-img-1">
+          <div class="obra-badges">
+            <span class="badge badge-curado">Curado</span>
+            <span class="badge badge-verificado">Verificado</span>
+          </div>
+          <div class="obra-estado estado-disponible">Disponible</div>
+        </div>
+        <div class="obra-body">
+          <div class="obra-cat">Pintura · Óleo sobre tela</div>
+          <h3 class="obra-title">Tarde en el Iberá</h3>
+          <div class="obra-artist">Carlos Méndez · Artista</div>
+          <div class="obra-meta">
+            <span class="obra-meta-item">
+              <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Corrientes
+            </span>
+            <span class="obra-meta-sep">·</span>
+            <span class="obra-meta-item">80 × 100 cm</span>
+            <span class="obra-meta-sep">·</span>
+            <span class="obra-meta-item">1978</span>
+          </div>
+          <div class="obra-price">$ 280.000</div>
+          <div class="obra-actions">
+            <a href="#" class="obra-btn obra-btn-ver">Ver pieza</a>
+            <a href="#" class="obra-btn obra-btn-consultar">Consultar</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="obra-card">
+        <div class="obra-img obra-img-2">
+          <div class="obra-badges">
+            <span class="badge badge-curado">Curado</span>
+          </div>
+          <div class="obra-estado estado-disponible">Disponible</div>
+        </div>
+        <div class="obra-body">
+          <div class="obra-cat">Escultura · Bronce</div>
+          <h3 class="obra-title">Figura en reposo</h3>
+          <div class="obra-artist">Ana Voronoff · Artista</div>
+          <div class="obra-meta">
+            <span class="obra-meta-item">
+              <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Buenos Aires
+            </span>
+            <span class="obra-meta-sep">·</span>
+            <span class="obra-meta-item">42 cm altura</span>
+          </div>
+          <div class="obra-price">$ 540.000</div>
+          <div class="obra-actions">
+            <a href="#" class="obra-btn obra-btn-ver">Ver pieza</a>
+            <a href="#" class="obra-btn obra-btn-consultar">Consultar</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="obra-card">
+        <div class="obra-img obra-img-3">
+          <div class="obra-badges">
+            <span class="badge badge-verificado">Verificado</span>
+          </div>
+          <div class="obra-estado estado-reservado">Reservada</div>
+        </div>
+        <div class="obra-body">
+          <div class="obra-cat">Orfebrería · Plata</div>
+          <h3 class="obra-title">Jarro colonial siglo XVIII</h3>
+          <div class="obra-artist">Galería del Sur · Galería</div>
+          <div class="obra-meta">
+            <span class="obra-meta-item">
+              <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Córdoba
+            </span>
+            <span class="obra-meta-sep">·</span>
+            <span class="obra-meta-item">Siglo XVIII</span>
+          </div>
+          <div class="obra-price">$ 180.000</div>
+          <div class="obra-actions">
+            <a href="#" class="obra-btn obra-btn-ver">Ver pieza</a>
+            <a href="#" class="obra-btn obra-btn-consultar">Ver disponibilidad</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="obra-card">
+        <div class="obra-img obra-img-4">
+          <div class="obra-badges">
+            <span class="badge badge-subasta">En subasta</span>
+            <span class="badge badge-curado">Curado</span>
+          </div>
+        </div>
+        <div class="obra-body">
+          <div class="obra-cat">Coleccionable · Numismática</div>
+          <h3 class="obra-title">Colección monedas de plata</h3>
+          <div class="obra-artist">Roberto Ávila · Coleccionista</div>
+          <div class="obra-meta">
+            <span class="obra-meta-item">
+              <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Santa Fe
+            </span>
+            <span class="obra-meta-sep">·</span>
+            <span class="obra-meta-item">Cierra en 04:22:10</span>
+          </div>
+          <div class="obra-price">$ 95.000 <span class="obra-price-sub">oferta actual</span></div>
+          <div class="obra-actions">
+            <a href="#subastas" class="obra-btn obra-btn-ver">Ver pieza</a>
+            <a href="#subastas" class="obra-btn obra-btn-ofertar">Ofertar</a>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ========== BLOQUE 3: INCORPORACIONES RECIENTES ========== -->
+  <section class="sec-alt" id="recientes">
+    <div class="sec-head" style="border-bottom-color: #E8E2DC;">
+      <div>
+        <h2 class="sec-title">Incorporaciones recientes</h2>
+        <div class="sec-sub">Últimas piezas publicadas en la plataforma</div>
+      </div>
+      <a href="#catalogo" class="sec-link">Ver todas →</a>
+    </div>
+
+    <div class="recientes-grid">
+
+      <article class="obra-card-h">
+        <div class="obra-h-img obra-img-5">
+          <div class="obra-badges">
+            <span class="badge badge-verificado">Verificado</span>
+          </div>
+        </div>
+        <div class="obra-h-body">
+          <div>
+            <div class="obra-cat">Antigüedad · Relojería</div>
+            <h3 class="obra-title" style="font-size:15px">Reloj de péndulo francés</h3>
+            <div class="obra-artist">Anticuario Del Valle · Anticuario</div>
+            <div class="obra-meta">
+              <span class="obra-meta-item">
+                <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                Rosario
+              </span>
+              <span class="obra-meta-sep">·</span>
+              <span class="obra-meta-item">Siglo XIX</span>
+            </div>
+          </div>
+          <div>
+            <div class="obra-price" style="font-size:16px">$ 340.000</div>
+            <div class="obra-actions">
+              <a href="#" class="obra-btn obra-btn-ver">Ver pieza</a>
+              <a href="#" class="obra-btn obra-btn-consultar">Consultar</a>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="obra-card-h">
+        <div class="obra-h-img obra-img-6">
+          <div class="obra-badges">
+            <span class="badge badge-curado">Curado</span>
+          </div>
+        </div>
+        <div class="obra-h-body">
+          <div>
+            <div class="obra-cat">Pintura · Acrílico</div>
+            <h3 class="obra-title" style="font-size:15px">Abstracción en verde</h3>
+            <div class="obra-artist">Lucía Ferreyra · Artista</div>
+            <div class="obra-meta">
+              <span class="obra-meta-item">
+                <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                Mendoza
+              </span>
+              <span class="obra-meta-sep">·</span>
+              <span class="obra-meta-item">60 × 80 cm</span>
+            </div>
+          </div>
+          <div>
+            <div class="obra-price" style="font-size:16px">$ 120.000</div>
+            <div class="obra-actions">
+              <a href="#" class="obra-btn obra-btn-ver">Ver pieza</a>
+              <a href="#" class="obra-btn obra-btn-consultar">Consultar</a>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="obra-card-h">
+        <div class="obra-h-img obra-img-7">
+          <div class="obra-badges">
+            <span class="badge badge-verificado">Verificado</span>
+            <span class="badge badge-curado">Curado</span>
+          </div>
+        </div>
+        <div class="obra-h-body">
+          <div>
+            <div class="obra-cat">Arte religioso · Talla en madera</div>
+            <h3 class="obra-title" style="font-size:15px">San Francisco tallado en madera</h3>
+            <div class="obra-artist">Col. Privada Salta · Coleccionista</div>
+            <div class="obra-meta">
+              <span class="obra-meta-item">
+                <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                Salta
+              </span>
+              <span class="obra-meta-sep">·</span>
+              <span class="obra-meta-item">Siglo XVII</span>
+            </div>
+          </div>
+          <div>
+            <div class="obra-price" style="font-size:16px">$ 480.000</div>
+            <div class="obra-actions">
+              <a href="#" class="obra-btn obra-btn-ver">Ver pieza</a>
+              <a href="#" class="obra-btn obra-btn-consultar">Consultar</a>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="obra-card-h">
+        <div class="obra-h-img obra-img-2">
+          <div class="obra-badges">
+            <span class="badge badge-subasta">En subasta</span>
+          </div>
+        </div>
+        <div class="obra-h-body">
+          <div>
+            <div class="obra-cat">Mueble antiguo · Madera</div>
+            <h3 class="obra-title" style="font-size:15px">Escritorio estilo victoriano</h3>
+            <div class="obra-artist">Galería Norte · Galería</div>
+            <div class="obra-meta">
+              <span class="obra-meta-item">
+                <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                Tucumán
+              </span>
+              <span class="obra-meta-sep">·</span>
+              <span class="obra-meta-item">Cierra en 1d 08:00</span>
+            </div>
+          </div>
+          <div>
+            <div class="obra-price" style="font-size:16px">$ 210.000 <span class="obra-price-sub">oferta actual</span></div>
+            <div class="obra-actions">
+              <a href="#subastas" class="obra-btn obra-btn-ver">Ver pieza</a>
+              <a href="#subastas" class="obra-btn obra-btn-ofertar">Ofertar</a>
+            </div>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ========== BLOQUE 4: SUBASTAS CURADAS ========== -->
+  <section class="sec" id="subastas">
+    <div class="sec-head">
+      <div>
+        <h2 class="sec-title"><span class="live-dot"></span> Subastas curadas</h2>
+        <div class="sec-sub">Piezas seleccionadas con ofertas coordinadas por la plataforma</div>
+      </div>
+      <a href="#subastas" class="sec-link">Ver todas las subastas →</a>
+    </div>
+
+    <div class="sub-grid">
+
+      <article class="sub-card">
+        <div class="sub-img obra-img-2">
+          <div class="obra-badges">
+            <span class="badge badge-subasta">En subasta</span>
+            <span class="badge badge-curado">Curado</span>
+          </div>
+          <div class="sub-timer-overlay">
+            <div>
+              <div class="sub-timer-label">Cierra en</div>
+              <div class="sub-timer-val" data-countdown="9278">02:34:38</div>
+            </div>
+            <div style="text-align:right">
+              <div class="sub-timer-label">Ofertas</div>
+              <div class="sub-timer-val">14</div>
+            </div>
+          </div>
+        </div>
+        <div class="sub-body">
+          <div class="obra-cat">Pintura · Acuarela</div>
+          <h3 class="sub-name">Tarde en el río</h3>
+          <div class="obra-artist">Martín Sosa · Artista</div>
+          <div class="obra-meta">
+            <span class="obra-meta-item">
+              <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Corrientes
+            </span>
+            <span class="obra-meta-sep">·</span>
+            <span class="obra-meta-item">60 × 80 cm · 2018</span>
+          </div>
+          <div class="sub-bid-row">
+            <div>
+              <div class="sub-bid-label">Oferta actual</div>
+              <div class="sub-bid-price">$ 120.000</div>
+            </div>
+            <div class="sub-base">Base: $ 80.000</div>
+          </div>
+          <div class="sub-aviso">Las ofertas quedan sujetas a validación del vendedor y condiciones de la plataforma.</div>
+          <div class="obra-actions">
+            <a href="#" class="obra-btn obra-btn-ver">Ver pieza</a>
+            <a href="#" class="obra-btn obra-btn-ofertar">Ofertar ahora</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="sub-card">
+        <div class="sub-img obra-img-4">
+          <div class="obra-badges">
+            <span class="badge badge-subasta">En subasta</span>
+          </div>
+          <div class="sub-timer-overlay">
+            <div>
+              <div class="sub-timer-label">Cierra en</div>
+              <div class="sub-timer-val">08:42:11</div>
+            </div>
+            <div style="text-align:right">
+              <div class="sub-timer-label">Ofertas</div>
+              <div class="sub-timer-val">7</div>
+            </div>
+          </div>
+        </div>
+        <div class="sub-body">
+          <div class="obra-cat">Antigüedad · Relojería</div>
+          <h3 class="sub-name">Reloj de péndulo francés</h3>
+          <div class="obra-artist">Anticuario Del Valle · Anticuario</div>
+          <div class="obra-meta">
+            <span class="obra-meta-item">
+              <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Rosario
+            </span>
+            <span class="obra-meta-sep">·</span>
+            <span class="obra-meta-item">Siglo XIX</span>
+          </div>
+          <div class="sub-bid-row">
+            <div>
+              <div class="sub-bid-label">Oferta actual</div>
+              <div class="sub-bid-price">$ 340.000</div>
+            </div>
+            <div class="sub-base">Base: $ 200.000</div>
+          </div>
+          <div class="sub-aviso">Las ofertas quedan sujetas a validación del vendedor y condiciones de la plataforma.</div>
+          <div class="obra-actions">
+            <a href="#" class="obra-btn obra-btn-ver">Ver pieza</a>
+            <a href="#" class="obra-btn obra-btn-ofertar">Ofertar ahora</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="sub-card">
+        <div class="sub-img obra-img-3">
+          <div class="obra-badges">
+            <span class="badge badge-subasta">En subasta</span>
+            <span class="badge badge-curado">Curado</span>
+          </div>
+          <div class="sub-timer-overlay">
+            <div>
+              <div class="sub-timer-label">Cierra en</div>
+              <div class="sub-timer-val">1d 04:20</div>
+            </div>
+            <div style="text-align:right">
+              <div class="sub-timer-label">Ofertas</div>
+              <div class="sub-timer-val">23</div>
+            </div>
+          </div>
+        </div>
+        <div class="sub-body">
+          <div class="obra-cat">Escultura · Mármol</div>
+          <h3 class="sub-name">Torso femenino</h3>
+          <div class="obra-artist">Galería Sur · Galería</div>
+          <div class="obra-meta">
+            <span class="obra-meta-item">
+              <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Córdoba
+            </span>
+            <span class="obra-meta-sep">·</span>
+            <span class="obra-meta-item">42 cm · 2003</span>
+          </div>
+          <div class="sub-bid-row">
+            <div>
+              <div class="sub-bid-label">Oferta actual</div>
+              <div class="sub-bid-price">$ 780.000</div>
+            </div>
+            <div class="sub-base">Base: $ 500.000</div>
+          </div>
+          <div class="sub-aviso">Las ofertas quedan sujetas a validación del vendedor y condiciones de la plataforma.</div>
+          <div class="obra-actions">
+            <a href="#" class="obra-btn obra-btn-ver">Ver pieza</a>
+            <a href="#" class="obra-btn obra-btn-ofertar">Ofertar ahora</a>
+          </div>
+        </div>
+      </article>
+
+    </div>
+
+    <!-- Próximas subastas -->
+    <div class="proximas-wrap">
+      <div class="proximas-label">Próximas subastas</div>
+      <div class="proximas-grid">
+        <div class="proxima-card">
+          <div class="proxima-img obra-img-5"></div>
+          <div>
+            <div class="obra-cat">Orfebrería</div>
+            <div class="proxima-name">Platería criolla siglo XIX</div>
+            <div class="proxima-fecha">Abre el 28 de mayo</div>
+          </div>
+        </div>
+        <div class="proxima-card">
+          <div class="proxima-img obra-img-1"></div>
+          <div>
+            <div class="obra-cat">Pintura</div>
+            <div class="proxima-name">Maestros del litoral argentino</div>
+            <div class="proxima-fecha">Abre el 3 de junio</div>
+          </div>
+        </div>
+        <div class="proxima-card">
+          <div class="proxima-img obra-img-6"></div>
+          <div>
+            <div class="obra-cat">Arte religioso</div>
+            <div class="proxima-name">Colección colonial noroeste</div>
+            <div class="proxima-fecha">Abre el 10 de junio</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== BLOQUE 4: FERIAS SINCRÓNICAS ========== -->
+  <section class="sec-dark" id="ferias">
+    <div class="sec-head-dark">
+      <div>
+        <h2 class="sec-title-light">Ferias sincrónicas</h2>
+        <div class="sec-sub-light">Funcionalidad exclusiva de la plataforma OBRA VIVA</div>
+      </div>
+      <a href="#ferias" class="sec-link-light">Ver todas las ferias →</a>
+    </div>
+
+    <div class="ferias-tag">
+      <span class="live-dot"></span>
+      Experiencia digital propia de OBRA VIVA
+    </div>
+
+    <!-- Feria activa principal -->
+    <div class="feria-main">
+      <div class="feria-main-img">
+        <div class="feria-live-badge">
+          <span class="live-dot"></span> Activa ahora
+        </div>
+      </div>
+      <div class="feria-main-body">
+        <div>
+          <div class="feria-org">Feria sincronizada · Buenos Aires · Evento cultural destacado</div>
+          <h3 class="feria-name">Encuentro Nacional de Arte Contemporáneo</h3>
+          <p class="feria-desc">OBRA VIVA permite que ferias culturales, galerías y eventos puedan tener una versión digital para ampliar su alcance y recibir consultas y compras online desde cualquier lugar del país.</p>
+          <div class="feria-datos">
+            <div>
+              <div class="feria-dato-n">42</div>
+              <div class="feria-dato-l">Artistas</div>
+            </div>
+            <div>
+              <div class="feria-dato-n">180</div>
+              <div class="feria-dato-l">Obras disponibles</div>
+            </div>
+            <div>
+              <div class="feria-dato-n">Hasta 18/05</div>
+              <div class="feria-dato-l">Fecha de cierre</div>
+            </div>
+          </div>
+        </div>
+        <div class="feria-actions">
+          <a href="#" class="btn-feria-p">Ingresar a la feria →</a>
+          <a href="#" class="btn-feria-s">Ver artistas participantes</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ferias secundarias -->
+    <div class="ferias-small-grid">
+      <div class="feria-small">
+        <div class="feria-small-estado"><span class="live-dot"></span> Activa ahora</div>
+        <div class="feria-small-name">Bienal Digital del NEA</div>
+        <div class="feria-small-loc">Resistencia, Chaco</div>
+        <div class="feria-small-fecha">Hasta el 25 de mayo →</div>
+      </div>
+      <div class="feria-small">
+        <div class="feria-small-estado proxima">Próximamente</div>
+        <div class="feria-small-name">Feria del Litoral</div>
+        <div class="feria-small-loc">Corrientes Capital</div>
+        <div class="feria-small-fecha">Desde el 1 de junio →</div>
+      </div>
+      <div class="feria-small">
+        <div class="feria-small-estado proxima">Próximamente</div>
+        <div class="feria-small-name">Encuentro de Arte y Antigüedades</div>
+        <div class="feria-small-loc">Córdoba Capital</div>
+        <div class="feria-small-fecha">Desde el 15 de junio →</div>
+      </div>
+    </div>
+
+    <!-- Cómo funcionan -->
+    <div class="ferias-como">
+      <div class="ferias-como-item">
+        <div class="ferias-como-num">01</div>
+        <div class="ferias-como-title">La feria ocurre en el mundo real</div>
+        <div class="ferias-como-desc">Una feria física de arte, antigüedades o cultura se realiza en cualquier ciudad del país.</div>
+      </div>
+      <div class="ferias-como-item">
+        <div class="ferias-como-num">02</div>
+        <div class="ferias-como-title">OBRA VIVA la sincroniza online</div>
+        <div class="ferias-como-desc">Creamos una página exclusiva con los artistas, obras y precios disponibles durante el evento.</div>
+      </div>
+      <div class="ferias-como-item">
+        <div class="ferias-como-num">03</div>
+        <div class="ferias-como-title">Comprás desde cualquier lugar</div>
+        <div class="ferias-como-desc">Cualquier persona en Argentina puede explorar, consultar y comprar sin estar presente en la feria.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== BLOQUE 5: ARTISTAS DESTACADOS ========== -->
+  <section class="sec" id="artistas">
+    <div class="sec-head">
+      <div>
+        <h2 class="sec-title">Artistas destacados</h2>
+        <div class="sec-sub">Creadores verificados que publican y venden en OBRA VIVA</div>
+      </div>
+      <a href="#artistas" class="sec-link">Ver todos los artistas →</a>
+    </div>
+    <div class="artistas-grid">
+
+      <article class="artista-card">
+        <div class="artista-img obra-img-1">
+          <div class="artista-badge">Verificado</div>
+        </div>
+        <div class="artista-body">
+          <div class="artista-tipo">Artista · Pintura</div>
+          <h3 class="artista-name">Carlos Méndez</h3>
+          <div class="artista-esp">Óleos y acuarelas del litoral</div>
+          <div class="artista-meta">
+            <span class="artista-loc">
+              <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Corrientes
+            </span>
+            <span class="artista-obras">12 obras</span>
+          </div>
+          <a href="#" class="artista-btn">Ver perfil →</a>
+        </div>
+      </article>
+
+      <article class="artista-card">
+        <div class="artista-img obra-img-2">
+          <div class="artista-badge">Verificado</div>
+        </div>
+        <div class="artista-body">
+          <div class="artista-tipo">Artista · Escultura</div>
+          <h3 class="artista-name">Ana Voronoff</h3>
+          <div class="artista-esp">Escultura figurativa en bronce</div>
+          <div class="artista-meta">
+            <span class="artista-loc">
+              <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Buenos Aires
+            </span>
+            <span class="artista-obras">8 obras</span>
+          </div>
+          <a href="#" class="artista-btn">Ver perfil →</a>
+        </div>
+      </article>
+
+      <article class="artista-card">
+        <div class="artista-img obra-img-6"></div>
+        <div class="artista-body">
+          <div class="artista-tipo">Artista · Grabado</div>
+          <h3 class="artista-name">Lucía Ferreyra</h3>
+          <div class="artista-esp">Grabado y arte contemporáneo</div>
+          <div class="artista-meta">
+            <span class="artista-loc">
+              <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Mendoza
+            </span>
+            <span class="artista-obras">5 obras</span>
+          </div>
+          <a href="#" class="artista-btn">Ver perfil →</a>
+        </div>
+      </article>
+
+      <article class="artista-card">
+        <div class="artista-img obra-img-4">
+          <div class="artista-badge">Verificado</div>
+        </div>
+        <div class="artista-body">
+          <div class="artista-tipo">Artista · Pintura</div>
+          <h3 class="artista-name">Roberto Ávila</h3>
+          <div class="artista-esp">Arte figurativo argentino</div>
+          <div class="artista-meta">
+            <span class="artista-loc">
+              <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Salta
+            </span>
+            <span class="artista-obras">9 obras</span>
+          </div>
+          <a href="#" class="artista-btn">Ver perfil →</a>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ========== BLOQUE 5: GALERÍAS Y ANTICUARIOS ========== -->
+  <section class="sec-alt" id="galerias">
+    <div class="sec-head" style="border-bottom-color:#E8E2DC">
+      <div>
+        <h2 class="sec-title">Galerías destacadas</h2>
+        <div class="sec-sub">Espacios de arte verificados con presencia en OBRA VIVA</div>
+      </div>
+      <a href="#galerias" class="sec-link">Ver todas las galerías →</a>
+    </div>
+    <div class="galerias-grid">
+
+      <article class="galeria-card">
+        <div class="galeria-img obra-img-5"></div>
+        <div class="galeria-body">
+          <div>
+            <div class="artista-tipo">Galería · Arte contemporáneo</div>
+            <h3 class="galeria-name">Galería del Sur</h3>
+            <div class="galeria-desc">Especializada en arte contemporáneo argentino y latinoamericano.</div>
+          </div>
+          <div class="galeria-foot">
+            <span class="artista-loc">
+              <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Córdoba
+            </span>
+            <a href="#" class="sec-link">Ver galería →</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="galeria-card">
+        <div class="galeria-img obra-img-6"></div>
+        <div class="galeria-body">
+          <div>
+            <div class="artista-tipo">Galería · Arte clásico</div>
+            <h3 class="galeria-name">Espacio Norte</h3>
+            <div class="galeria-desc">Pintura clásica y obras de maestros del siglo XX.</div>
+          </div>
+          <div class="galeria-foot">
+            <span class="artista-loc">
+              <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Tucumán
+            </span>
+            <a href="#" class="sec-link">Ver galería →</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="galeria-card">
+        <div class="galeria-img obra-img-7"></div>
+        <div class="galeria-body">
+          <div>
+            <div class="artista-tipo">Galería · Arte del NEA</div>
+            <h3 class="galeria-name">Casa Cultural Iberá</h3>
+            <div class="galeria-desc">Arte regional del litoral, con foco en artistas del NEA.</div>
+          </div>
+          <div class="galeria-foot">
+            <span class="artista-loc">
+              <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Corrientes
+            </span>
+            <a href="#" class="sec-link">Ver galería →</a>
+          </div>
+        </div>
+      </article>
+
+    </div>
+
+    <!-- ANTICUARIOS -->
+    <div class="anticuarios-wrap" id="anticuarios">
+      <div class="sec-head" style="border-bottom-color:#E8E2DC; margin-top:40px;">
+        <div>
+          <h2 class="sec-title">Anticuarios destacados</h2>
+          <div class="sec-sub">Especialistas en antigüedades, objetos de época y patrimonio</div>
+        </div>
+        <a href="#anticuarios" class="sec-link">Ver todos →</a>
+      </div>
+      <div class="anticuarios-grid">
+
+        <article class="antic-card">
+          <div class="vend-tipo">Anticuario · Muebles y objetos</div>
+          <h3 class="antic-name">Anticuario Del Valle</h3>
+          <div class="galeria-desc">Muebles coloniales, relojes de época y objetos decorativos del siglo XIX y XX.</div>
+          <div class="antic-foot">
+            <span class="artista-loc">
+              <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Rosario
+            </span>
+            <a href="#" class="sec-link">24 piezas →</a>
+          </div>
+        </article>
+
+        <article class="antic-card">
+          <div class="vend-tipo">Anticuario · Orfebrería</div>
+          <h3 class="antic-name">Casa Platería Criolla</h3>
+          <div class="galeria-desc">Especialistas en platería criolla, mates de plata y orfebrería colonial argentina.</div>
+          <div class="antic-foot">
+            <span class="artista-loc">
+              <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Salta
+            </span>
+            <a href="#" class="sec-link">18 piezas →</a>
+          </div>
+        </article>
+
+        <article class="antic-card">
+          <div class="vend-tipo">Anticuario · Arte religioso</div>
+          <h3 class="antic-name">El Arcón Colonial</h3>
+          <div class="galeria-desc">Arte sacro, tallas en madera, retablos y objetos de uso litúrgico colonial.</div>
+          <div class="antic-foot">
+            <span class="artista-loc">
+              <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Córdoba
+            </span>
+            <a href="#" class="sec-link">31 piezas →</a>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== BLOQUE 5: VENDÉ EN OBRA VIVA ========== -->
+  <section class="sec-bordeaux" id="vender">
+    <div class="vende-eyebrow">Sumate a la plataforma</div>
+    <h2 class="vende-title">Vendé en<br><em>OBRA VIVA</em></h2>
+    <p class="vende-desc">Publicá obras, antigüedades, esculturas, piezas de colección y objetos culturales. Conectá con compradores de todo el país y digitalizá tu presencia en el mercado del arte argentino.</p>
+
+    <div class="vende-tipos">
+      <div class="vende-tipo-btn">
+        <div class="vende-tipo-label">Creador</div>
+        <div class="vende-tipo-name">Soy artista</div>
+        <div class="vende-tipo-desc">Publicá y vendé tu obra directamente sin intermediarios.</div>
+      </div>
+      <div class="vende-tipo-btn">
+        <div class="vende-tipo-label">Espacio</div>
+        <div class="vende-tipo-name">Soy galería</div>
+        <div class="vende-tipo-desc">Digitalizá tu galería y ampliá tu alcance a todo el país.</div>
+      </div>
+      <div class="vende-tipo-btn">
+        <div class="vende-tipo-label">Comercio</div>
+        <div class="vende-tipo-name">Soy anticuario</div>
+        <div class="vende-tipo-desc">Publicá tu inventario y llegá a nuevos coleccionistas.</div>
+      </div>
+      <div class="vende-tipo-btn">
+        <div class="vende-tipo-label">Particular</div>
+        <div class="vende-tipo-name">Soy coleccionista</div>
+        <div class="vende-tipo-desc">Vendé piezas de tu colección privada con respaldo editorial.</div>
+      </div>
+      <div class="vende-tipo-btn">
+        <div class="vende-tipo-label">Evento</div>
+        <div class="vende-tipo-name">Tengo una feria</div>
+        <div class="vende-tipo-desc">Sincronizá tu feria física con nuestra plataforma digital.</div>
+      </div>
+      <div class="vende-tipo-btn">
+        <div class="vende-tipo-label">Especialista</div>
+        <div class="vende-tipo-name">Soy especialista</div>
+        <div class="vende-tipo-desc">Orfebres, restauradores y expertos culturales pueden mostrar su trabajo y conectar con nuevos clientes.</div>
+      </div>
+    </div>
+
+    <div class="vende-actions">
+      <a href="#" class="btn-vende-p">Quiero publicar en OBRA VIVA</a>
+      <a href="#" class="btn-vende-s">Conocer más →</a>
+    </div>
+    <div class="vende-nota">Sin costo inicial en etapa de lanzamiento · Modelo de comisión por venta efectiva · Acompañamiento editorial incluido</div>
+
+    <div class="vende-stats">
+      <div class="vende-stat">
+        <div class="vende-stat-n">+500</div>
+        <div class="vende-stat-l">Obras publicadas</div>
+      </div>
+      <div class="vende-stat">
+        <div class="vende-stat-n">+80</div>
+        <div class="vende-stat-l">Vendedores seleccionados</div>
+      </div>
+      <div class="vende-stat">
+        <div class="vende-stat-n">8</div>
+        <div class="vende-stat-l">Provincias representadas</div>
+      </div>
+      <div class="vende-stat">
+        <div class="vende-stat-n">100%</div>
+        <div class="vende-stat-l">Perfiles revisados</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== BLOQUE 6: CÓMO FUNCIONA ========== -->
+  <section class="sec" id="como-funciona">
+    <div class="sec-head">
+      <div>
+        <h2 class="sec-title">Cómo funciona</h2>
+        <div class="sec-sub">Simple, claro y con acompañamiento en cada paso</div>
+      </div>
+    </div>
+    <div class="como-grid">
+      <div class="como-col">
+        <div class="como-col-header">
+          <span class="como-tag como-tag-comprador">Compradores</span>
+          <span class="como-col-title">Para quienes buscan arte</span>
+        </div>
+        <div class="como-step">
+          <div class="como-num">01</div>
+          <div>
+            <div class="como-step-title">Explorá obras y objetos únicos</div>
+            <div class="como-step-desc">Navegá el catálogo por categoría, provincia, artista o precio. Usá el buscador para encontrar exactamente lo que buscás.</div>
+          </div>
+        </div>
+        <div class="como-step">
+          <div class="como-num">02</div>
+          <div>
+            <div class="como-step-title">Consultá disponibilidad</div>
+            <div class="como-step-desc">Contactá al vendedor directamente por WhatsApp o a través de la plataforma. Sin intermediarios innecesarios.</div>
+          </div>
+        </div>
+        <div class="como-step">
+          <div class="como-num">03</div>
+          <div>
+            <div class="como-step-title">Coordiná la compra</div>
+            <div class="como-step-desc">Acordá precio, condiciones y envío o retiro directamente con el vendedor. OBRA VIVA acompaña el proceso.</div>
+          </div>
+        </div>
+        <div class="como-step">
+          <div class="como-num">04</div>
+          <div>
+            <div class="como-step-title">Recibí asesoramiento</div>
+            <div class="como-step-desc">Nuestro equipo editorial puede orientarte en la elección, autenticidad o historia de una pieza.</div>
+          </div>
+        </div>
+      </div>
+      <div class="como-col">
+        <div class="como-col-header">
+          <span class="como-tag como-tag-vendedor">Vendedores</span>
+          <span class="como-col-title">Para quienes publican</span>
+        </div>
+        <div class="como-step">
+          <div class="como-num">01</div>
+          <div>
+            <div class="como-step-title">Creá tu perfil</div>
+            <div class="como-step-desc">Registrate como artista, galería, anticuario, coleccionista o especialista. El perfil es revisado antes de publicarse.</div>
+          </div>
+        </div>
+        <div class="como-step">
+          <div class="como-num">02</div>
+          <div>
+            <div class="como-step-title">Publicá tus piezas</div>
+            <div class="como-step-desc">Cargá fotos, ficha técnica, descripción e historia de cada obra. OBRA VIVA revisa y aprueba cada publicación.</div>
+          </div>
+        </div>
+        <div class="como-step">
+          <div class="como-num">03</div>
+          <div>
+            <div class="como-step-title">Recibí consultas</div>
+            <div class="como-step-desc">Los compradores te contactan directamente. Podés gestionar consultas por WhatsApp o desde tu panel personal.</div>
+          </div>
+        </div>
+        <div class="como-step">
+          <div class="como-num">04</div>
+          <div>
+            <div class="como-step-title">Vendé con acompañamiento</div>
+            <div class="como-step-desc">OBRA VIVA te acompaña en cada venta. Modelo de comisión por venta efectiva, sin costos fijos iniciales.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== BLOQUE 6: PROVINCIAS ========== -->
+  <section class="sec-alt" id="provincias">
+    <div class="sec-head" style="border-bottom-color:#E8E2DC">
+      <div>
+        <h2 class="sec-title">Descubrí piezas por provincia</h2>
+        <div class="sec-sub">Arte y objetos únicos de toda Argentina</div>
+      </div>
+      <a href="#provincias" class="sec-link">Ver mapa completo →</a>
+    </div>
+    <div class="provincias-grid">
+      <a href="#catalogo" class="prov-card">
+        <div class="prov-region">NEA · Origen</div>
+        <div class="prov-name">Corrientes</div>
+        <div class="prov-count">48 piezas disponibles →</div>
+      </a>
+      <a href="#catalogo" class="prov-card">
+        <div class="prov-region">NEA</div>
+        <div class="prov-name">Chaco</div>
+        <div class="prov-count">22 piezas disponibles →</div>
+      </a>
+      <a href="#catalogo" class="prov-card">
+        <div class="prov-region">Centro</div>
+        <div class="prov-name">Buenos Aires</div>
+        <div class="prov-count">134 piezas disponibles →</div>
+      </a>
+      <a href="#catalogo" class="prov-card">
+        <div class="prov-region">Centro</div>
+        <div class="prov-name">Córdoba</div>
+        <div class="prov-count">67 piezas disponibles →</div>
+      </a>
+      <a href="#catalogo" class="prov-card">
+        <div class="prov-region">Litoral</div>
+        <div class="prov-name">Santa Fe</div>
+        <div class="prov-count">41 piezas disponibles →</div>
+      </a>
+      <a href="#catalogo" class="prov-card">
+        <div class="prov-region">Cuyo</div>
+        <div class="prov-name">Mendoza</div>
+        <div class="prov-count">29 piezas disponibles →</div>
+      </a>
+      <a href="#catalogo" class="prov-card">
+        <div class="prov-region">NOA</div>
+        <div class="prov-name">Salta</div>
+        <div class="prov-count">36 piezas disponibles →</div>
+      </a>
+      <a href="#catalogo" class="prov-card">
+        <div class="prov-region">NOA</div>
+        <div class="prov-name">Tucumán</div>
+        <div class="prov-count">18 piezas disponibles →</div>
+      </a>
+    </div>
+  </section>
+
+  <!-- ========== BLOQUE 6: MAGAZINE ========== -->
+  <section class="sec" id="magazine">
+    <div class="sec-head">
+      <div>
+        <h2 class="sec-title">Magazine cultural</h2>
+        <div class="sec-sub">Arte, historia, entrevistas y mercado del arte argentino</div>
+      </div>
+      <a href="#magazine" class="sec-link">Ver todas las notas →</a>
+    </div>
+    <div class="mag-grid">
+      <div class="mag-main">
+        <div class="mag-main-img obra-img-1"></div>
+        <div class="mag-eyebrow">Entrevista · Restauración</div>
+        <h3 class="mag-title">El arte de restaurar: conversación con una especialista correntina</h3>
+        <p class="mag-desc">Una restauradora del NEA habla sobre el proceso de devolver vida a obras del siglo XIX y los desafíos del mercado cultural argentino.</p>
+        <a href="#" class="mag-leer">Leer nota completa →</a>
+      </div>
+      <div class="mag-side">
+        <a href="#" class="mag-item">
+          <div class="mag-thumb obra-img-5"></div>
+          <div>
+            <div class="mag-item-cat">Historia</div>
+            <div class="mag-item-title">La orfebrería jesuítica en el litoral argentino</div>
+          </div>
+        </a>
+        <a href="#" class="mag-item">
+          <div class="mag-thumb obra-img-3"></div>
+          <div>
+            <div class="mag-item-cat">Mercado</div>
+            <div class="mag-item-title">Qué buscan los coleccionistas argentinos hoy</div>
+          </div>
+        </a>
+        <a href="#" class="mag-item">
+          <div class="mag-thumb obra-img-6"></div>
+          <div>
+            <div class="mag-item-cat">Artistas</div>
+            <div class="mag-item-title">Cinco pintores del NEA que hay que conocer</div>
+          </div>
+        </a>
+        <a href="#" class="mag-item">
+          <div class="mag-thumb obra-img-4"></div>
+          <div>
+            <div class="mag-item-cat">Guía</div>
+            <div class="mag-item-title">Cómo iniciarse en el coleccionismo de monedas históricas</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== BLOQUE 6: FOOTER ========== -->
+  <footer class="footer" id="contacto">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-logo">OBRA<span>VIVA</span></div>
+        <div class="footer-logo-sub">Marketplace cultural argentino</div>
+        <p class="footer-desc">Plataforma de arte, antigüedades y objetos únicos. Conectamos artistas, galerías, anticuarios y coleccionistas de toda Argentina.</p>
+        <a href="https://wa.me/5493624000000" target="_blank" class="footer-wpp">
+          <!-- TODO: reemplazar número antes del lanzamiento -->
+          <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          Consultar por WhatsApp
+        </a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Comprar</div>
+        <nav class="footer-links">
+          <a href="#catalogo" class="footer-link">Catálogo de obras</a>
+          <a href="#catalogo" class="footer-link">Pinturas</a>
+          <a href="#catalogo" class="footer-link">Esculturas</a>
+          <a href="#catalogo" class="footer-link">Antigüedades</a>
+          <a href="#catalogo" class="footer-link">Orfebrería</a>
+          <a href="#catalogo" class="footer-link">Coleccionables</a>
+          <a href="#subastas" class="footer-link">Subastas activas</a>
+        </nav>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Vender</div>
+        <nav class="footer-links">
+          <a href="#vender" class="footer-link">Publicar una obra</a>
+          <a href="#artistas" class="footer-link">Artistas</a>
+          <a href="#galerias" class="footer-link">Galerías</a>
+          <a href="#anticuarios" class="footer-link">Anticuarios</a>
+          <a href="#ferias" class="footer-link">Ferias sincrónicas</a>
+          <a href="#como-funciona" class="footer-link">Cómo funciona</a>
+        </nav>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Plataforma</div>
+        <nav class="footer-links">
+          <a href="#magazine" class="footer-link">Magazine cultural</a>
+          <a href="#ferias" class="footer-link">Ferias y eventos</a>
+          <a href="#contacto" class="footer-link">Ayuda y contacto</a>
+          <a href="#" class="footer-link">Términos y condiciones</a>
+          <a href="#" class="footer-link">Política de privacidad</a>
+          <a href="https://instagram.com" target="_blank" class="footer-link">Instagram</a>
+        </nav>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2026 OBRA VIVA · Desde Corrientes hacia toda Argentina</div>
+      <div class="footer-legal">
+        <a href="#" class="footer-legal-link">Términos</a>
+        <a href="#" class="footer-legal-link">Privacidad</a>
+        <a href="#contacto" class="footer-legal-link">Ayuda</a>
+      </div>
+      <div class="footer-social">
+        <a href="https://instagram.com" target="_blank" class="footer-social-btn" aria-label="Instagram">
+          <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        </a>
+        <a href="#" class="footer-social-btn" aria-label="Facebook">
+          <svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
