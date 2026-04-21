@@ -233,10 +233,10 @@ function abrirDrawer(obra = null) {
     document.getElementById('form-material').value      = obra.material || '';
     document.getElementById('form-estilo').value        = obra.estilo || '';
     document.getElementById('form-imagen').value        = obra.imagen_portada || '';
-    document.getElementById('form-destacado').checked  = obra.destacado  || false;
-    document.getElementById('form-curado').checked     = obra.curado     || false;
-    document.getElementById('form-verificado').checked = obra.verificado || false;
-    document.getElementById('form-activo').checked     = obra.activo !== false;
+    document.getElementById('form-destacado').checked  = obra.destacado  === true;
+    document.getElementById('form-curado').checked     = obra.curado     === true;
+    document.getElementById('form-verificado').checked = obra.verificado === true;
+    document.getElementById('form-activo').checked     = obra.activo     !== false;
 
     if (obra.imagen_portada) {
       document.getElementById('imagen-preview').src              = obra.imagen_portada;
@@ -468,9 +468,9 @@ async function guardarObra() {
     mostrarMsg('Error al guardar: ' + error.message, 'error');
   } else {
     mostrarMsg(id ? '✓ Obra actualizada correctamente.' : '✓ Obra creada correctamente.', 'ok');
-    cerrarDrawer();
     await cargarObras();
     await actualizarMetricas();
+    cerrarDrawer();
   }
 }
 
