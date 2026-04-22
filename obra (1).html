@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OBRA VIVA · Detalle de obra</title>
+  <meta name="description" content="Ficha completa de la obra." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="obra.css" />
+</head>
+<body>
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <span class="live-dot"></span>
+      <span>Subasta activa · <strong>Colección Maestros Rioplatenses</strong></span>
+      <span class="topbar-sep">|</span>
+      <a href="index.html#subastas" class="topbar-link">Ver subasta →</a>
+    </div>
+    <div class="topbar-right">
+      <span>Desde Corrientes hacia toda Argentina</span>
+      <span class="topbar-sep">|</span>
+      <a href="index.html#contacto" class="topbar-link">Ayuda</a>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-top">
+      <div class="logo-wrap">
+        <a href="index.html" class="logo">OBRA<span>VIVA</span></a>
+        <div class="logo-sub">Marketplace cultural argentino</div>
+      </div>
+      <nav class="nav-marketplace">
+        <a href="index.html#catalogo" class="nav-item">Comprar</a>
+        <a href="index.html#vender" class="nav-item">Vender</a>
+        <a href="index.html#subastas" class="nav-item nav-highlight">Subastas</a>
+        <a href="index.html#artistas" class="nav-item">Artistas</a>
+        <a href="index.html#galerias" class="nav-item">Galerías</a>
+        <a href="index.html#ferias" class="nav-item nav-new">Ferias</a>
+        <a href="index.html#magazine" class="nav-item">Magazine</a>
+      </nav>
+      <div class="header-actions">
+        <a href="index.html#vender" class="btn-publicar">Publicar obra</a>
+        <a href="#" class="btn-ingresar">Ingresar</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- BREADCRUMB -->
+  <div class="breadcrumb" id="breadcrumb" style="display:none">
+    <a href="index.html">Inicio</a>
+    <span class="breadcrumb-sep">›</span>
+    <a href="index.html#catalogo">Catálogo</a>
+    <span class="breadcrumb-sep">›</span>
+    <span id="breadcrumb-categoria"></span>
+    <span class="breadcrumb-sep">›</span>
+    <span id="breadcrumb-titulo"></span>
+  </div>
+
+  <!-- LOADING -->
+  <div class="obra-loading" id="obra-loading">
+    <div class="loading-dots">
+      <span></span><span></span><span></span>
+    </div>
+    <div class="loading-text">Cargando obra…</div>
+  </div>
+
+  <!-- ERROR -->
+  <div class="obra-error" id="obra-error" style="display:none">
+    <div class="error-icon">◈</div>
+    <h2 class="error-titulo">Obra no encontrada</h2>
+    <p class="error-sub">La obra que buscás no existe o fue retirada del catálogo.</p>
+    <a href="index.html" class="btn-volver">← Volver al catálogo</a>
+  </div>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <main class="obra-main" id="obra-main" style="display:none">
+
+    <!-- HERO: imagen + datos principales -->
+    <section class="obra-hero">
+
+      <!-- IMAGEN -->
+      <div class="obra-imagen-wrap">
+        <div class="obra-imagen" id="obra-imagen">
+          <!-- imagen cargada dinámicamente -->
+        </div>
+        <div class="obra-badges-hero" id="obra-badges-hero"></div>
+      </div>
+
+      <!-- DATOS PRINCIPALES -->
+      <div class="obra-datos-principales">
+
+        <div class="obra-categoria-label" id="obra-categoria-label"></div>
+        <h1 class="obra-titulo-grande" id="obra-titulo-grande"></h1>
+        <div class="obra-artista-hero" id="obra-artista-hero"></div>
+
+        <div class="obra-ubicacion" id="obra-ubicacion"></div>
+
+        <div class="obra-precio-wrap" id="obra-precio-wrap">
+          <div class="obra-precio-label">Precio</div>
+          <div class="obra-precio-grande" id="obra-precio-grande"></div>
+        </div>
+
+        <div class="obra-estado-wrap" id="obra-estado-wrap"></div>
+
+        <!-- BOTONES DE ACCIÓN -->
+        <div class="obra-acciones" id="obra-acciones"></div>
+
+        <!-- FICHA RÁPIDA -->
+        <div class="obra-ficha-rapida" id="obra-ficha-rapida"></div>
+
+      </div>
+    </section>
+
+    <!-- DESCRIPCIÓN -->
+    <section class="obra-descripcion-sec" id="obra-descripcion-sec" style="display:none">
+      <div class="obra-descripcion-inner">
+        <h2 class="obra-sec-title">Sobre esta obra</h2>
+        <div class="obra-descripcion-texto" id="obra-descripcion-texto"></div>
+      </div>
+    </section>
+
+    <!-- FICHA TÉCNICA COMPLETA -->
+    <section class="obra-ficha-sec" id="obra-ficha-sec" style="display:none">
+      <div class="obra-ficha-inner">
+        <h2 class="obra-sec-title">Ficha técnica</h2>
+        <div class="obra-ficha-grid" id="obra-ficha-grid"></div>
+      </div>
+    </section>
+
+    <!-- CONTACTO / VOLVER -->
+    <section class="obra-footer-sec">
+      <div class="obra-footer-inner">
+        <a href="index.html" class="btn-volver-catalogo">← Volver al catálogo</a>
+        <div class="obra-footer-acciones" id="obra-footer-acciones"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer" id="contacto">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-logo">OBRA<span>VIVA</span></div>
+        <div class="footer-logo-sub">Marketplace cultural argentino</div>
+        <p class="footer-desc">Plataforma de arte, antigüedades y objetos únicos. Conectamos artistas, galerías, anticuarios y coleccionistas de toda Argentina.</p>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Comprar</div>
+        <nav class="footer-links">
+          <a href="index.html#catalogo" class="footer-link">Catálogo de obras</a>
+          <a href="index.html#subastas" class="footer-link">Subastas activas</a>
+          <a href="index.html#ferias" class="footer-link">Ferias sincrónicas</a>
+        </nav>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Vender</div>
+        <nav class="footer-links">
+          <a href="index.html#vender" class="footer-link">Publicar una obra</a>
+          <a href="index.html#artistas" class="footer-link">Artistas</a>
+          <a href="index.html#galerias" class="footer-link">Galerías</a>
+        </nav>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Plataforma</div>
+        <nav class="footer-links">
+          <a href="index.html#magazine" class="footer-link">Magazine cultural</a>
+          <a href="index.html#contacto" class="footer-link">Contacto</a>
+          <a href="#" class="footer-link">Términos y condiciones</a>
+        </nav>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2026 OBRA VIVA · Desde Corrientes hacia toda Argentina</div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="obra.js"></script>
+</body>
+</html>
