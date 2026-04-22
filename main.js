@@ -186,32 +186,11 @@ async function cargarObrasRecientes() {
     .select('*')
     .eq('activo', true)
     .order('created_at', { ascending: false })
-    .limit(4);
+    .limit(6);
 
   if (error || !data || data.length === 0) return;
 
-  grid.innerHTML = data.map(obra => `
-    <article class="obra-card-h">
-      <div class="obra-h-img" style="position:relative;overflow:hidden;">
-        ${imagenHTML(obra)}
-        ${badgesHTML(obra)}
-      </div>
-      <div class="obra-h-body">
-        <div>
-          <div class="obra-cat">${obra.categoria}${obra.subcategoria ? ' · ' + obra.subcategoria : ''}</div>
-          <h3 class="obra-title" style="font-size:15px">${obra.titulo}</h3>
-          <div class="obra-artist">${obra.artista_vendedor} · ${obra.tipo_vendedor.charAt(0).toUpperCase() + obra.tipo_vendedor.slice(1)}</div>
-          <div class="obra-meta">
-            ${obra.provincia ? `<span class="obra-meta-item"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>${obra.provincia}</span>` : ''}
-            ${obra.anio ? `<span class="obra-meta-sep">·</span><span class="obra-meta-item">${obra.anio}</span>` : ''}
-          </div>
-        </div>
-        <div>
-          <div class="obra-price" style="font-size:16px">${formatPrecio(obra.precio, obra.moneda)}</div>
-          <div class="obra-actions">${botonesHTML(obra)}</div>
-        </div>
-      </div>
-    </article>`).join('');
+  grid.innerHTML = data.map(cardObraHTML).join('');
 }
 
 /* --- INIT --- */
