@@ -104,16 +104,16 @@ function botonesHTML(obra) {
 
   if (esSubasta) {
     return `
-      <a href="#subastas" class="obra-btn obra-btn-ver">Ver pieza</a>
+      <a href="obra.html?id=${obra.id}" class="obra-btn obra-btn-ver">Ver pieza</a>
       <a href="#subastas" class="obra-btn obra-btn-ofertar">Ofertar</a>`;
   }
   if (obra.estado === 'reservado') {
     return `
-      <a href="#" class="obra-btn obra-btn-ver">Ver pieza</a>
+      <a href="obra.html?id=${obra.id}" class="obra-btn obra-btn-ver">Ver pieza</a>
       <a href="https://wa.me/${wpp}?text=${msg}" target="_blank" class="obra-btn obra-btn-consultar">Ver disponibilidad</a>`;
   }
   return `
-    <a href="#" class="obra-btn obra-btn-ver">Ver pieza</a>
+    <a href="obra.html?id=${obra.id}" class="obra-btn obra-btn-ver">Ver pieza</a>
     <a href="https://wa.me/${wpp}?text=${msg}" target="_blank" class="obra-btn obra-btn-consultar">Consultar</a>`;
 }
 
