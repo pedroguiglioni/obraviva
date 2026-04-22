@@ -3,16 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>OBRA VIVA · Cargando obra…</title>
-  <meta name="description" content="Ficha de obra en OBRA VIVA, el marketplace cultural argentino." />
+  <title>OBRA VIVA · Cargando…</title>
+  <meta name="description" content="Ficha de obra en OBRA VIVA, el marketplace cultural argentino." id="meta-desc" />
 
-  <!-- Open Graph (actualizado dinámicamente por obra.js) -->
-  <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="OBRA VIVA" />
-  <meta property="og:title" content="OBRA VIVA · Marketplace Cultural Argentino" id="og-title" />
-  <meta property="og:description" content="Descubrí obras, antigüedades y piezas únicas en OBRA VIVA." id="og-description" />
-  <meta property="og:image" content="" id="og-image" />
-  <meta property="og:url" content="" id="og-url" />
+  <!-- Open Graph -->
+  <meta property="og:type"        content="website" />
+  <meta property="og:site_name"   content="OBRA VIVA · Marketplace Cultural Argentino" />
+  <meta property="og:title"       content="OBRA VIVA"          id="og-title" />
+  <meta property="og:description" content="Marketplace cultural argentino." id="og-desc" />
+  <meta property="og:image"       content=""                   id="og-image" />
+  <meta property="og:url"         content=""                   id="og-url" />
+  <meta name="twitter:card"       content="summary_large_image" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -21,248 +22,281 @@
 </head>
 <body>
 
-  <!-- TOPBAR -->
+  <!-- ══════════════════════════════════════
+       TOPBAR INSTITUCIONAL
+  ══════════════════════════════════════ -->
   <div class="topbar">
     <div class="topbar-left">
-      <span class="live-dot"></span>
-      <span>Subasta activa · <strong>Colección Maestros Rioplatenses</strong></span>
-      <span class="topbar-sep">|</span>
-      <a href="index.html#subastas" class="topbar-link">Ver subasta →</a>
+      <span class="topbar-marca">OBRA VIVA</span>
+      <span class="topbar-sep">·</span>
+      <span>Plataforma cultural argentina</span>
     </div>
     <div class="topbar-right">
-      <span>Desde Corrientes hacia toda Argentina</span>
-      <span class="topbar-sep">|</span>
-      <a href="index.html#contacto" class="topbar-link">Ayuda</a>
+      <span class="topbar-trust-item">Publicaciones revisadas</span>
+      <span class="topbar-sep">·</span>
+      <span class="topbar-trust-item">Vendedores verificados</span>
+      <span class="topbar-sep">·</span>
+      <span class="topbar-trust-item">Red cultural nacional</span>
     </div>
   </div>
 
-  <!-- HEADER -->
+  <!-- ══════════════════════════════════════
+       HEADER
+  ══════════════════════════════════════ -->
   <header class="header">
-    <div class="header-top">
+    <div class="header-inner">
       <div class="logo-wrap">
         <a href="index.html" class="logo">OBRA<span>VIVA</span></a>
         <div class="logo-sub">Marketplace cultural argentino</div>
       </div>
       <nav class="nav-marketplace">
-        <a href="index.html#catalogo" class="nav-item">Comprar</a>
-        <a href="index.html#vender" class="nav-item">Vender</a>
-        <a href="index.html#subastas" class="nav-item nav-highlight">Subastas</a>
-        <a href="index.html#artistas" class="nav-item">Artistas</a>
-        <a href="index.html#galerias" class="nav-item">Galerías</a>
-        <a href="index.html#ferias" class="nav-item nav-new">Ferias</a>
-        <a href="index.html#magazine" class="nav-item">Magazine</a>
+        <a href="index.html#catalogo"  class="nav-item">Comprar</a>
+        <a href="index.html#vender"    class="nav-item">Vender</a>
+        <a href="index.html#subastas"  class="nav-item nav-highlight">Subastas</a>
+        <a href="index.html#artistas"  class="nav-item">Artistas</a>
+        <a href="index.html#galerias"  class="nav-item">Galerías</a>
+        <a href="index.html#ferias"    class="nav-item nav-exclusivo">Ferias</a>
+        <a href="index.html#magazine"  class="nav-item">Magazine</a>
       </nav>
       <div class="header-actions">
         <a href="index.html#vender" class="btn-publicar">Publicar obra</a>
-        <a href="#" class="btn-ingresar">Ingresar</a>
+        <a href="#"                 class="btn-ingresar">Ingresar</a>
       </div>
     </div>
   </header>
 
-  <!-- BREADCRUMB -->
-  <div class="breadcrumb" id="breadcrumb" style="display:none">
-    <a href="index.html">Inicio</a>
-    <span class="breadcrumb-sep">›</span>
-    <a href="index.html#catalogo">Catálogo</a>
-    <span class="breadcrumb-sep">›</span>
-    <span id="breadcrumb-categoria"></span>
-    <span class="breadcrumb-sep">›</span>
-    <span id="breadcrumb-titulo"></span>
-  </div>
+  <!-- ══════════════════════════════════════
+       BREADCRUMB FEDERAL
+  ══════════════════════════════════════ -->
+  <nav class="breadcrumb" id="breadcrumb" aria-label="Navegación" style="display:none">
+    <a href="index.html">Catálogo federal</a>
+    <span class="bc-sep">›</span>
+    <span id="bc-cat"></span>
+    <span class="bc-sep" id="bc-prov-sep" style="display:none">›</span>
+    <span id="bc-prov"  style="display:none"></span>
+    <span class="bc-sep">›</span>
+    <span id="bc-titulo" class="bc-actual"></span>
+  </nav>
 
-  <!-- LOADING -->
+  <!-- ══════════════════════════════════════
+       LOADING
+  ══════════════════════════════════════ -->
   <div class="obra-loading" id="obra-loading">
     <div class="loading-dots"><span></span><span></span><span></span></div>
-    <div class="loading-text">Cargando obra…</div>
+    <p class="loading-text">Cargando obra…</p>
   </div>
 
-  <!-- ERROR -->
+  <!-- ══════════════════════════════════════
+       ERROR
+  ══════════════════════════════════════ -->
   <div class="obra-error" id="obra-error" style="display:none">
-    <div class="error-eyebrow">OBRA VIVA · Catálogo</div>
+    <p class="error-eyebrow">OBRA VIVA · Catálogo federal</p>
     <div class="error-icon">◈</div>
     <h2 class="error-titulo">Obra no encontrada</h2>
-    <p class="error-sub">La obra que buscás no existe, fue retirada del catálogo o aún no está publicada.</p>
-    <a href="index.html" class="btn-volver">← Volver al catálogo</a>
+    <p class="error-sub">La pieza que buscás no existe, fue retirada del catálogo o todavía no está publicada.</p>
+    <a href="index.html" class="btn-outline">← Volver al catálogo</a>
   </div>
 
-  <!-- MAIN -->
-  <main class="obra-main" id="obra-main" style="display:none">
+  <!-- ══════════════════════════════════════
+       MAIN
+  ══════════════════════════════════════ -->
+  <main id="obra-main" style="display:none">
 
-    <!-- ========== HERO: IMAGEN + DATOS ========== -->
-    <section class="obra-hero">
+    <!-- ─── HERO ─── -->
+    <section class="hero">
 
-      <!-- COLUMNA IZQUIERDA: IMAGEN -->
-      <div class="obra-col-imagen">
-        <div class="obra-imagen-wrap" id="obra-imagen-wrap">
-          <!-- imagen o placeholder cargado dinámicamente -->
+      <!-- COLUMNA IMAGEN -->
+      <div class="hero-imagen-col">
+        <div class="imagen-principal-wrap" id="imagen-principal-wrap">
+          <!-- inyectado por JS -->
         </div>
-        <div class="obra-badges-bajo" id="obra-badges-bajo"></div>
+        <div class="galeria-miniaturas" id="galeria-miniaturas" style="display:none">
+          <!-- inyectado por JS -->
+        </div>
+        <div class="imagen-badges" id="imagen-badges"></div>
       </div>
 
-      <!-- COLUMNA DERECHA: DATOS PRINCIPALES -->
-      <div class="obra-col-datos">
+      <!-- COLUMNA DATOS -->
+      <div class="hero-datos-col">
 
-        <!-- Categoría -->
-        <div class="obra-eyebrow" id="obra-eyebrow"></div>
+        <p  class="datos-eyebrow"   id="datos-eyebrow"></p>
+        <h1 class="datos-titulo"    id="datos-titulo"></h1>
+        <div class="datos-artista"  id="datos-artista"></div>
 
-        <!-- Título -->
-        <h1 class="obra-titulo" id="obra-titulo"></h1>
+        <div class="datos-sep"></div>
 
-        <!-- Artista -->
-        <div class="obra-artista-bloque" id="obra-artista-bloque"></div>
+        <div class="datos-precio"   id="datos-precio"></div>
+        <div class="datos-estado"   id="datos-estado"></div>
+        <div class="datos-acciones" id="datos-acciones"></div>
 
-        <!-- Separador -->
-        <div class="obra-sep"></div>
+        <div class="datos-ficha-rapida" id="datos-ficha-rapida"></div>
 
-        <!-- Precio -->
-        <div class="obra-precio-bloque" id="obra-precio-bloque"></div>
+        <!-- CONFIANZA RESUMIDA (dentro del hero) -->
+        <div class="confianza-resumida">
+          <div class="conf-item"><span class="conf-dot">◈</span><span>Publicación revisada</span></div>
+          <div class="conf-item"><span class="conf-dot">◎</span><span>Consulta segura</span></div>
+          <div class="conf-item"><span class="conf-dot">▤</span><span>Red cultural argentina</span></div>
+        </div>
 
-        <!-- Estado -->
-        <div class="obra-estado-bloque" id="obra-estado-bloque"></div>
+      </div>
+    </section>
 
-        <!-- BOTONES DE ACCIÓN PRINCIPALES -->
-        <div class="obra-acciones-principales" id="obra-acciones-principales"></div>
+    <!-- ─── CURADURÍA ─── -->
+    <div id="sec-curaduria" style="display:none">
+      <section class="curaduria-sec">
+        <div class="curaduria-inner">
+          <p class="curaduria-eyebrow">Selección curada · OBRA VIVA</p>
+          <blockquote class="curaduria-texto" id="curaduria-texto"></blockquote>
+        </div>
+      </section>
+    </div>
 
-        <!-- BLOQUE DE CONFIANZA -->
-        <div class="obra-confianza">
-          <div class="confianza-title">Por qué confiar en OBRA VIVA</div>
-          <div class="confianza-items">
-            <div class="confianza-item">
-              <div class="confianza-icon">◈</div>
-              <div>
-                <div class="confianza-item-title">Obra revisada</div>
-                <div class="confianza-item-desc">Cada publicación es verificada por nuestro equipo editorial antes de aparecer en el catálogo.</div>
-              </div>
-            </div>
-            <div class="confianza-item">
-              <div class="confianza-icon">◎</div>
-              <div>
-                <div class="confianza-item-title">Consulta segura</div>
-                <div class="confianza-item-desc">Comunicación directa con el vendedor. OBRA VIVA acompaña cada operación.</div>
-              </div>
-            </div>
-            <div class="confianza-item">
-              <div class="confianza-icon">▤</div>
-              <div>
-                <div class="confianza-item-title">Red cultural argentina</div>
-                <div class="confianza-item-desc">Plataforma federal con artistas, galerías y anticuarios de todo el país.</div>
-              </div>
-            </div>
+    <!-- ─── DESCRIPCIÓN ─── -->
+    <div id="sec-descripcion" style="display:none">
+      <section class="sec-wrap sec-blanco">
+        <div class="sec-inner">
+          <h2 class="sec-title">Sobre esta obra</h2>
+          <p class="descripcion-texto" id="descripcion-texto"></p>
+        </div>
+      </section>
+    </div>
+
+    <!-- ─── VALOR CULTURAL ─── -->
+    <div id="sec-valor" style="display:none">
+      <section class="sec-wrap sec-crema">
+        <div class="sec-inner">
+          <h2 class="sec-title">Valor cultural y contexto</h2>
+          <div class="valor-grid" id="valor-grid"></div>
+          <p class="valor-nota" id="valor-nota"></p>
+        </div>
+      </section>
+    </div>
+
+    <!-- ─── FICHA TÉCNICA ─── -->
+    <div id="sec-ficha" style="display:none">
+      <section class="sec-wrap sec-blanco">
+        <div class="sec-inner">
+          <h2 class="sec-title">Ficha técnica</h2>
+          <div class="ficha-grid" id="ficha-grid"></div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ─── OPERACIÓN COMERCIAL ─── -->
+    <section class="sec-wrap sec-crema" id="sec-operacion">
+      <div class="sec-inner">
+        <h2 class="sec-title">Información de operación</h2>
+        <div class="operacion-grid" id="operacion-grid"></div>
+        <div class="operacion-nota">
+          <span class="conf-dot">◈</span>
+          OBRA VIVA acompaña cada operación. Consultas respondidas por el vendedor dentro de las 48 hs.
+          Envío, retiro y documentación coordinados caso a caso.
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── CONFIANZA INSTITUCIONAL ─── -->
+    <section class="confianza-sec">
+      <div class="sec-inner">
+        <h2 class="confianza-sec-title">Por qué confiar en OBRA VIVA</h2>
+        <div class="confianza-grid">
+          <div class="confianza-card">
+            <div class="confianza-card-icon">◈</div>
+            <h3 class="confianza-card-title">Publicación revisada</h3>
+            <p class="confianza-card-desc">Cada obra pasa por un proceso de revisión editorial antes de publicarse en el catálogo. No aceptamos publicaciones sin verificación.</p>
+          </div>
+          <div class="confianza-card">
+            <div class="confianza-card-icon">◎</div>
+            <h3 class="confianza-card-title">Vendedor validado</h3>
+            <p class="confianza-card-desc">Los artistas, galerías, anticuarios y coleccionistas que publican en OBRA VIVA son identificados y validados dentro de la red cultural.</p>
+          </div>
+          <div class="confianza-card">
+            <div class="confianza-card-icon">▤</div>
+            <h3 class="confianza-card-title">Consulta acompañada</h3>
+            <p class="confianza-card-desc">No estás solo en la operación. OBRA VIVA facilita el contacto, acompaña la consulta y orienta cada transacción dentro de la plataforma.</p>
+          </div>
+          <div class="confianza-card">
+            <div class="confianza-card-icon">◑</div>
+            <h3 class="confianza-card-title">Red cultural nacional</h3>
+            <p class="confianza-card-desc">Plataforma federal con presencia en toda Argentina. Conectamos Corrientes, Chaco, Buenos Aires, Córdoba, Mendoza, Salta y cada provincia del país.</p>
+          </div>
+          <div class="confianza-card">
+            <div class="confianza-card-icon">▣</div>
+            <h3 class="confianza-card-title">Documentación futura</h3>
+            <p class="confianza-card-desc">Trabajamos para incorporar certificados de autenticidad, procedencia documentada y ficha de conservación como estándar de la plataforma.</p>
           </div>
         </div>
-
-        <!-- FICHA RÁPIDA -->
-        <div class="obra-ficha-rapida" id="obra-ficha-rapida"></div>
-
       </div>
     </section>
 
-    <!-- ========== CURADURÍA EDITORIAL ========== -->
-    <div id="obra-curaduria-sec" style="display:none">
-      <section class="obra-curaduria">
-        <div class="curaduria-inner">
-          <div class="curaduria-eyebrow">Selección curada · OBRA VIVA</div>
-          <div class="curaduria-texto" id="curaduria-texto"></div>
-        </div>
-      </section>
-    </div>
-
-    <!-- ========== DESCRIPCIÓN ========== -->
-    <div id="obra-descripcion-sec" style="display:none">
-      <section class="obra-sec-wrap obra-sec-blanco">
-        <div class="obra-sec-inner">
-          <h2 class="obra-sec-title">Sobre esta obra</h2>
-          <div class="obra-descripcion-texto" id="obra-descripcion-texto"></div>
-        </div>
-      </section>
-    </div>
-
-    <!-- ========== FICHA TÉCNICA ========== -->
-    <div id="obra-ficha-sec" style="display:none">
-      <section class="obra-sec-wrap obra-sec-crema">
-        <div class="obra-sec-inner">
-          <h2 class="obra-sec-title">Ficha técnica</h2>
-          <div class="obra-ficha-editorial" id="obra-ficha-editorial"></div>
-        </div>
-      </section>
-    </div>
-
-    <!-- ========== CONTEXTO CULTURAL ========== -->
-    <div id="obra-contexto-sec" style="display:none">
-      <section class="obra-sec-wrap obra-sec-blanco">
-        <div class="obra-sec-inner">
-          <h2 class="obra-sec-title">Contexto cultural</h2>
-          <div class="obra-contexto-grid" id="obra-contexto-grid"></div>
-        </div>
-      </section>
-    </div>
-
-    <!-- ========== BLOQUE VENDEDOR ========== -->
-    <section class="obra-sec-wrap obra-sec-crema">
-      <div class="obra-sec-inner">
-        <h2 class="obra-sec-title">Publicado por</h2>
-        <div class="vendedor-bloque" id="vendedor-bloque"></div>
+    <!-- ─── VENDEDOR AVANZADO ─── -->
+    <section class="sec-wrap sec-crema">
+      <div class="sec-inner">
+        <h2 class="sec-title">Publicado por</h2>
+        <div class="vendedor-avanzado" id="vendedor-avanzado"></div>
       </div>
     </section>
 
-    <!-- ========== CONSULTA COMERCIAL ========== -->
-    <section class="obra-consulta-sec">
-      <div class="obra-sec-inner">
+    <!-- ─── CONSULTA COMERCIAL ─── -->
+    <section class="consulta-sec">
+      <div class="sec-inner">
         <div class="consulta-inner">
           <div class="consulta-texto">
             <h2 class="consulta-titulo">¿Te interesa esta pieza?</h2>
-            <p class="consulta-desc">Consultá disponibilidad, coordiná la compra, preguntá por envío o retiro. Nuestro equipo y el vendedor te van a responder a la brevedad.</p>
+            <p class="consulta-desc">Consultá disponibilidad, coordiná la compra, preguntá por envío, retiro o documentación. El vendedor responde a través de OBRA VIVA.</p>
           </div>
           <div class="consulta-acciones" id="consulta-acciones"></div>
         </div>
       </div>
     </section>
 
-    <!-- ========== VOLVER ========== -->
-    <section class="obra-volver-sec">
-      <div class="obra-sec-inner">
-        <a href="index.html" class="btn-volver-catalogo">← Volver al catálogo</a>
-        <div class="obra-volver-texto">OBRA VIVA · Marketplace Cultural Argentino · Desde Corrientes hacia toda Argentina</div>
+    <!-- ─── CIERRE ─── -->
+    <section class="cierre-sec">
+      <div class="sec-inner">
+        <a href="index.html" class="btn-outline-claro">← Volver al catálogo federal</a>
+        <p class="cierre-texto">OBRA VIVA · Marketplace Cultural Argentino · Desde el NEA hacia toda la Argentina</p>
       </div>
     </section>
 
   </main>
 
-  <!-- FOOTER -->
-  <footer class="footer" id="contacto">
-    <div class="footer-top">
+  <!-- ══════════════════════════════════════
+       FOOTER
+  ══════════════════════════════════════ -->
+  <footer class="footer">
+    <div class="footer-grid">
       <div class="footer-brand">
-        <div class="footer-logo">OBRA<span>VIVA</span></div>
-        <div class="footer-logo-sub">Marketplace cultural argentino</div>
-        <p class="footer-desc">Plataforma de arte, antigüedades y objetos únicos. Conectamos artistas, galerías, anticuarios y coleccionistas de toda Argentina.</p>
+        <p class="footer-logo">OBRA<span>VIVA</span></p>
+        <p class="footer-logo-sub">Marketplace cultural argentino</p>
+        <p class="footer-desc">Arte, antigüedades y objetos únicos. Conectamos artistas, galerías, anticuarios y coleccionistas de toda Argentina.</p>
       </div>
-      <div class="footer-col">
-        <div class="footer-col-title">Comprar</div>
+      <div>
+        <p class="footer-col-title">Comprar</p>
         <nav class="footer-links">
           <a href="index.html#catalogo" class="footer-link">Catálogo de obras</a>
           <a href="index.html#subastas" class="footer-link">Subastas activas</a>
-          <a href="index.html#ferias" class="footer-link">Ferias sincrónicas</a>
+          <a href="index.html#ferias"   class="footer-link">Ferias sincrónicas</a>
         </nav>
       </div>
-      <div class="footer-col">
-        <div class="footer-col-title">Vender</div>
+      <div>
+        <p class="footer-col-title">Vender</p>
         <nav class="footer-links">
-          <a href="index.html#vender" class="footer-link">Publicar una obra</a>
+          <a href="index.html#vender"   class="footer-link">Publicar una obra</a>
           <a href="index.html#artistas" class="footer-link">Artistas</a>
           <a href="index.html#galerias" class="footer-link">Galerías</a>
         </nav>
       </div>
-      <div class="footer-col">
-        <div class="footer-col-title">Plataforma</div>
+      <div>
+        <p class="footer-col-title">Plataforma</p>
         <nav class="footer-links">
           <a href="index.html#magazine" class="footer-link">Magazine cultural</a>
-          <a href="index.html#contacto" class="footer-link">Ayuda y contacto</a>
-          <a href="#" class="footer-link">Términos y condiciones</a>
+          <a href="index.html"          class="footer-link">Ayuda y contacto</a>
+          <a href="#"                   class="footer-link">Términos y condiciones</a>
         </nav>
       </div>
     </div>
     <div class="footer-bottom">
-      <div class="footer-copy">© 2026 OBRA VIVA · Desde Corrientes hacia toda Argentina</div>
+      <p class="footer-copy">© 2026 OBRA VIVA · Plataforma Cultural Argentina · Desde Corrientes hacia toda la Argentina</p>
     </div>
   </footer>
 
